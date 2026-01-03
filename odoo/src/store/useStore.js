@@ -13,10 +13,28 @@ const useStore = create((set) => ({
   // UI state
   isLoading: false,
 
+  // Theme state
+  theme: localStorage.getItem("theme") || "light",
+
   // Actions
   setCurrentUser: (user) => set({ currentUser: user }),
 
   setTrips: (trips) => set({ trips }),
+
+  // Theme actions
+  setTheme: (theme) => {
+    localStorage.setItem("theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
+    set({ theme });
+  },
+
+  toggleTheme: () =>
+    set((state) => {
+      const newTheme = state.theme === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+      return { theme: newTheme };
+    }),
 
   addTrip: (trip) =>
     set((state) => ({

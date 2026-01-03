@@ -1,47 +1,318 @@
+/* ==========================================
+   GLOBETROTTER AUTH LAYOUT - PREMIUM DESIGN
+   ========================================== */
+
 .container {
+  position: relative;
   min-height: 100vh;
-  background-color: #F9FAFB;
+  background: var(--gradient-hero);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: var(--space-xl);
+  overflow: hidden;
+  transition: background var(--transition-slow);
 }
 
+/* Dark mode gradient override */
+[data-theme="dark"] .container {
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary-dark) 0%,
+    #1a2942 50%,
+    #0a1628 100%
+  );
+}
+
+/* ==========================================
+   BACKGROUND DECORATIVE ELEMENTS
+   ========================================== */
+
+.bgElements {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bgCircle1,
+.bgCircle2,
+.bgCircle3 {
+  position: absolute;
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  animation: float 20s ease-in-out infinite;
+}
+
+.bgCircle1 {
+  width: 500px;
+  height: 500px;
+  top: -10%;
+  right: -10%;
+  animation-delay: 0s;
+}
+
+.bgCircle2 {
+  width: 400px;
+  height: 400px;
+  bottom: -15%;
+  left: -5%;
+  animation-delay: 5s;
+}
+
+.bgCircle3 {
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 10s;
+}
+
+[data-theme="dark"] .bgCircle1,
+[data-theme="dark"] .bgCircle2,
+[data-theme="dark"] .bgCircle3 {
+  background: radial-gradient(
+    circle,
+    rgba(74, 125, 176, 0.1) 0%,
+    transparent 70%
+  );
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+/* ==========================================
+   THEME TOGGLE
+   ========================================== */
+
+.themeToggleWrapper {
+  position: absolute;
+  top: var(--space-xl);
+  right: var(--space-xl);
+  z-index: var(--z-dropdown);
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* ==========================================
+   WRAPPER & HEADER
+   ========================================== */
+
 .wrapper {
+  position: relative;
   width: 100%;
-  max-width: 28rem;
+  max-width: 480px;
+  z-index: 1;
+  animation: slideInUp 0.6s ease-out;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
 }
 
 .logoLink {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+  gap: var(--space-lg);
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: all var(--transition-base);
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
 }
 
 .logoLink:hover {
-  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.logoIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: bounce 2s ease-in-out infinite;
+}
+
+[data-theme="dark"] .logoIconWrapper {
+  background: var(--bg-secondary-dark);
+  box-shadow: var(--shadow-lg-dark);
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .logoIcon {
-  color: #2563EB;
+  color: var(--color-primary);
+  filter: drop-shadow(0 2px 4px rgba(74, 125, 176, 0.3));
 }
 
 .logo {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #2563EB;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: white;
   margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.5px;
 }
+
+.tagline {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.9);
+  margin: var(--space-xs) 0 0;
+  font-weight: var(--font-weight-medium);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================
+   CARD - Main Content
+   ========================================== */
 
 .card {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: var(--space-2xl);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-base);
+  animation: fadeIn 0.8s ease-out 0.2s both;
 }
 
+.card:hover {
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .card {
+  background-color: rgba(17, 24, 39, 0.8);
+  border-color: var(--border-dark);
+}
+
+/* ==========================================
+   FEATURES - Bottom Section
+   ========================================== */
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xl);
+  margin-top: var(--space-2xl);
+  animation: fadeIn 1s ease-out 0.4s both;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  color: white;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-base);
+}
+
+.feature:hover {
+  transform: translateY(-4px);
+}
+
+.feature svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-md);
+  }
+
+  .wrapper {
+    max-width: 100%;
+  }
+
+  .themeToggleWrapper {
+    top: var(--space-md);
+    right: var(--space-md);
+  }
+
+  .logo {
+    font-size: var(--font-size-3xl);
+  }
+
+  .logoIconWrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .logoIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .card {
+    padding: var(--space-xl);
+  }
+
+  .features {
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .feature {
+    font-size: var(--font-size-xs);
+  }
+
+  .bgCircle1,
+  .bgCircle2,
+  .bgCircle3 {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoLink {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .features {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .feature {
+    flex-direction: row;
+    gap: var(--space-sm);
+  }
+}
