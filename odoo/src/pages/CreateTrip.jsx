@@ -1,63 +1,93 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import MainLayout from '../layouts/MainLayout';
-import useStore from '../store/useStore';
-import styles from './CreateTrip.module.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import MainLayout from "../layouts/MainLayout";
+import useStore from "../store/useStore";
+import { createTrip } from "../services/tripService";
+import styles from "./CreateTrip.module.css";
 
 const CreateTrip = () => {
   const navigate = useNavigate();
-  const { currentUser, addTrip } = useStore();
+  const { currentUser } = useStore();
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    coverImage: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800',
+    name: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    coverImage: null,
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [imagePreview, setImagePreview] = useState(
+    "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800"
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setFormData((prev) => ({ ...prev, coverImage: file }));
+
+      // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, coverImage: reader.result }));
+        setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const newTrip = {
-      id: Date.now().toString(),
-      userId: currentUser?.id,
-      ...formData,
-      cities: [],
-      budget: {
-        total: 0,
-        transport: 0,
-        stay: 0,
-        food: 0,
-        activities: 0,
-      },
-      isPublic: false,
-      createdAt: new Date().toISOString().split('T')[0],
-    };
+    setError("");
+    setIsLoading(true);
 
-    addTrip(newTrip);
-    navigate(`/trip/${newTrip.id}/itinerary`);
+    try {
+      // Create FormData for file upload
+      const tripData = new FormData();
+      tripData.append("name", formData.name);
+      tripData.append("description", formData.description);
+      tripData.append("startDate", formData.startDate);
+      tripData.append("endDate", formData.endDate);
+
+      if (formData.coverImage) {
+        tripData.append("coverImage", formData.coverImage);
+      }
+
+      const response = await createTrip(tripData);
+
+      if (response.success) {
+        navigate(`/trip/${response.data.trip.id}/itinerary`);
+      }
+    } catch (err) {
+      console.error("Error creating trip:", err);
+      setError(err.message || "Failed to create trip. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <MainLayout>
       <div className={styles.container}>
         <h1 className={styles.title}>Create New Trip</h1>
+
+        {error && (
+          <div
+            style={{
+              padding: "var(--space-md)",
+              backgroundColor: "var(--error)",
+              color: "white",
+              borderRadius: "var(--radius-md)",
+              marginBottom: "var(--space-lg)",
+            }}
+          >
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
@@ -135,9 +165,9 @@ const CreateTrip = () => {
               onChange={handleImageUpload}
               className={styles.input}
             />
-            {formData.coverImage && (
+            {imagePreview && (
               <img
-                src={formData.coverImage}
+                src={imagePreview}
                 alt="Cover preview"
                 className={styles.imagePreview}
               />
@@ -145,13 +175,18 @@ const CreateTrip = () => {
           </div>
 
           <div className={styles.buttonGroup}>
-            <button type="submit" className={`${styles.button} ${styles.buttonPrimary}`}>
-              Create Trip
+            <button
+              type="submit"
+              className={`${styles.button} ${styles.buttonPrimary}`}
+              disabled={isLoading}
+            >
+              {isLoading ? "Creating Trip..." : "Create Trip"}
             </button>
             <button
               type="button"
-              onClick={() => navigate('/my-trips')}
+              onClick={() => navigate("/my-trips")}
               className={`${styles.button} ${styles.buttonSecondary}`}
+              disabled={isLoading}
             >
               Cancel
             </button>
@@ -163,4 +198,3 @@ const CreateTrip = () => {
 };
 
 export default CreateTrip;
-

@@ -1,6 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
-  Globe,
   Home,
   Plane,
   MapPin,
@@ -11,6 +10,7 @@ import {
 } from "lucide-react";
 import useStore from "../store/useStore";
 import ThemeToggle from "../components/ThemeToggle";
+import Logo from "../components/Logo";
 import styles from "./MainLayout.module.css";
 
 const MainLayout = ({ children }) => {
@@ -44,8 +44,7 @@ const MainLayout = ({ children }) => {
         <div className={styles.navbarContent}>
           <div className={styles.navbarLeft}>
             <Link to="/dashboard" className={styles.logo}>
-              <Globe className={styles.logoIcon} size={28} />
-              <span className={styles.logoText}>GlobeTrotter</span>
+              <Logo variant="full" height={36} />
             </Link>
           </div>
           <div className={styles.navbarRight}>

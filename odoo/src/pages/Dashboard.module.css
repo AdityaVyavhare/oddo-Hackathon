@@ -13,11 +13,21 @@
   animation: slideInUp 0.6s ease-out both;
 }
 
-.container > *:nth-child(1) { animation-delay: 0.05s; }
-.container > *:nth-child(2) { animation-delay: 0.1s; }
-.container > *:nth-child(3) { animation-delay: 0.15s; }
-.container > *:nth-child(4) { animation-delay: 0.2s; }
-.container > *:nth-child(5) { animation-delay: 0.25s; }
+.container > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.container > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.container > *:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.container > *:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.container > *:nth-child(5) {
+  animation-delay: 0.25s;
+}
 
 /* ==========================================
    HEADER SECTION
@@ -34,20 +44,29 @@
 }
 
 .header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   right: -10%;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
   border-radius: var(--radius-full);
   animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-20px) scale(1.05); }
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
 }
 
 .title {
@@ -92,16 +111,18 @@
 }
 
 .statCard::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(74, 125, 176, 0.08), 
-    transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(74, 125, 176, 0.08),
+    transparent
+  );
   transition: left 0.6s ease;
 }
 
@@ -148,30 +169,28 @@
   justify-content: center;
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, 
-    rgba(74, 125, 176, 0.1) 0%, 
-    rgba(42, 157, 143, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(74, 125, 176, 0.1) 0%,
+    rgba(42, 157, 143, 0.1) 100%
+  );
   border-radius: var(--radius-md);
   color: var(--color-primary);
   transition: all var(--transition-base);
 }
 
 .statCard:hover .statIcon {
-  background: linear-gradient(135deg, 
-    rgba(74, 125, 176, 0.2) 0%, 
-    rgba(42, 157, 143, 0.2) 100%);
-  transform: scale(1.1) rotate(5deg);
-}
-  transition: all 0.3s ease;
-}
-
-.statCard:hover .statIcon {
+  background: linear-gradient(
+    135deg,
+    rgba(74, 125, 176, 0.2) 0%,
+    rgba(42, 157, 143, 0.2) 100%
+  );
   transform: scale(1.1) rotate(5deg);
   opacity: 1;
 }
 
 .ctaCard {
-  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   border-radius: 0.75rem;
   box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
   padding: 2.5rem;
@@ -181,13 +200,17 @@
 }
 
 .ctaCard::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   right: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
   pointer-events: none;
 }
 
@@ -214,7 +237,7 @@
   align-items: center;
   gap: 0.5rem;
   background-color: white;
-  color: #2563EB;
+  color: #2563eb;
   padding: 0.875rem 1.75rem;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -227,7 +250,7 @@
 }
 
 .ctaButton:hover {
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
   transform: translateY(-1px);
   box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
 }
@@ -250,7 +273,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  color: #2563EB;
+  color: #2563eb;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.9375rem;
@@ -258,7 +281,7 @@
 }
 
 .viewAllLink:hover {
-  color: #1D4ED8;
+  color: #1d4ed8;
   gap: 0.5rem;
 }
 
@@ -277,18 +300,22 @@
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  border: 1px solid #F3F4F6;
+  border: 1px solid #f3f4f6;
   position: relative;
 }
 
 .tripCard::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, transparent 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(37, 99, 235, 0.05) 0%,
+    transparent 100%
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -298,9 +325,10 @@
 }
 
 .tripCard:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   transform: translateY(-4px) scale(1.02);
-  border-color: #E0E7FF;
+  border-color: #e0e7ff;
 }
 
 .tripCard:active {
@@ -331,13 +359,13 @@
 
 .tripDate {
   font-size: 0.875rem;
-  color: #6B7280;
+  color: #6b7280;
   margin-bottom: 0.5rem;
 }
 
 .tripCities {
   font-size: 0.875rem;
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 .emptyState {
@@ -349,19 +377,19 @@
 }
 
 .emptyText {
-  color: #6B7280;
+  color: #6b7280;
   margin-bottom: 1rem;
 }
 
 .emptyLink {
-  color: #2563EB;
+  color: #2563eb;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .emptyLink:hover {
-  color: #1D4ED8;
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
@@ -380,11 +408,12 @@
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  border: 1px solid #F3F4F6;
+  border: 1px solid #f3f4f6;
 }
 
 .cityCard:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   transform: translateY(-2px);
 }
 
@@ -406,20 +435,19 @@
 
 .cityCountry {
   font-size: 0.75rem;
-  color: #6B7280;
+  color: #6b7280;
 }
 
 @media (max-width: 768px) {
   .statsGrid {
     grid-template-columns: 1fr;
   }
-  
+
   .tripsGrid {
     grid-template-columns: 1fr;
   }
-  
+
   .citiesGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-

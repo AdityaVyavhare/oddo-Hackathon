@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { Globe, Compass, Map, Sparkles } from "lucide-react";
+import { Compass, Map, Sparkles } from "lucide-react";
 import ThemeToggle from "../components/ThemeToggle";
+import Logo from "../components/Logo";
 import styles from "./AuthLayout.module.css";
 
 const AuthLayout = ({ children }) => {
@@ -22,14 +23,9 @@ const AuthLayout = ({ children }) => {
         {/* Logo & Branding */}
         <div className={styles.header}>
           <Link to="/" className={styles.logoLink}>
-            <div className={styles.logoIconWrapper}>
-              <Globe className={styles.logoIcon} size={40} />
-            </div>
-            <div>
-              <h1 className={styles.logo}>GlobeTrotter</h1>
-              <p className={styles.tagline}>Your Journey Begins Here</p>
-            </div>
+            <Logo variant="full" height={48} />
           </Link>
+          <p className={styles.tagline}>Your Journey Begins Here</p>
         </div>
 
         {/* Main Card */}
