@@ -17,15 +17,10 @@ const getAllCountries = async (req, res) => {
 
     const countries = await Country.getAll(filters);
 
-    return ApiResponse.success(
-      res,
-      200,
-      "Countries retrieved successfully",
-      {
-        countries,
-        count: countries.length,
-      }
-    );
+    return ApiResponse.success(res, 200, "Countries retrieved successfully", {
+      countries,
+      count: countries.length,
+    });
   } catch (error) {
     console.error("Get all countries error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve countries");
@@ -68,12 +63,9 @@ const getContinents = async (req, res) => {
   try {
     const continents = await Country.getContinents();
 
-    return ApiResponse.success(
-      res,
-      200,
-      "Continents retrieved successfully",
-      { continents }
-    );
+    return ApiResponse.success(res, 200, "Continents retrieved successfully", {
+      continents,
+    });
   } catch (error) {
     console.error("Get continents error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve continents");

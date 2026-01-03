@@ -67,7 +67,8 @@ class Country {
 
   // Get all continents
   static async getContinents() {
-    const query = "SELECT DISTINCT continent FROM countries ORDER BY continent ASC";
+    const query =
+      "SELECT DISTINCT continent FROM countries ORDER BY continent ASC";
     const results = await executeQuery(query);
     return results.map((row) => row.continent);
   }

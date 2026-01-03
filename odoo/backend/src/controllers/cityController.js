@@ -163,16 +163,11 @@ const getCitiesByCountry = async (req, res) => {
 
     const cities = await City.getByCountry(countryId);
 
-    return ApiResponse.success(
-      res,
-      200,
-      "Cities retrieved successfully",
-      {
-        countryId: parseInt(countryId),
-        cities,
-        count: cities.length,
-      }
-    );
+    return ApiResponse.success(res, 200, "Cities retrieved successfully", {
+      countryId: parseInt(countryId),
+      cities,
+      count: cities.length,
+    });
   } catch (error) {
     console.error("Get cities by country error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve cities");

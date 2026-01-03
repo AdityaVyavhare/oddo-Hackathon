@@ -136,7 +136,8 @@ class Activity {
 
   // Increment popularity
   static async incrementPopularity(activityId) {
-    const query = "UPDATE activities SET popularity_count = popularity_count + 1 WHERE activity_id = ?";
+    const query =
+      "UPDATE activities SET popularity_count = popularity_count + 1 WHERE activity_id = ?";
     await executeQuery(query, [activityId]);
   }
 
@@ -243,7 +244,8 @@ class ActivityReview {
     const results = await executeQuery(query, [activityId, limit, offset]);
 
     // Get total count
-    const countQuery = "SELECT COUNT(*) as total FROM activity_reviews WHERE activity_id = ?";
+    const countQuery =
+      "SELECT COUNT(*) as total FROM activity_reviews WHERE activity_id = ?";
     const countResult = await executeQuery(countQuery, [activityId]);
 
     return {
@@ -279,19 +281,22 @@ class ActivityReview {
 
   // Delete review
   static async delete(reviewId, userId) {
-    const query = "DELETE FROM activity_reviews WHERE review_id = ? AND user_id = ?";
+    const query =
+      "DELETE FROM activity_reviews WHERE review_id = ? AND user_id = ?";
     await executeQuery(query, [reviewId, userId]);
   }
 
   // Mark review as helpful
   static async markHelpful(reviewId) {
-    const query = "UPDATE activity_reviews SET helpful_count = helpful_count + 1 WHERE review_id = ?";
+    const query =
+      "UPDATE activity_reviews SET helpful_count = helpful_count + 1 WHERE review_id = ?";
     await executeQuery(query, [reviewId]);
   }
 
   // Check if user already reviewed
   static async hasUserReviewed(activityId, userId) {
-    const query = "SELECT COUNT(*) as count FROM activity_reviews WHERE activity_id = ? AND user_id = ?";
+    const query =
+      "SELECT COUNT(*) as count FROM activity_reviews WHERE activity_id = ? AND user_id = ?";
     const results = await executeQuery(query, [activityId, userId]);
     return results[0].count > 0;
   }

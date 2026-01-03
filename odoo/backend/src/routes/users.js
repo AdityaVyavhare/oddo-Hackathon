@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
-const { handleValidationErrors } = require("../middleware/validationMiddleware");
+const {
+  handleValidationErrors,
+} = require("../middleware/validationMiddleware");
 const {
   updateProfileValidation,
   updatePreferencesValidation,

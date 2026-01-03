@@ -50,7 +50,8 @@ class City {
     }
 
     if (filters.search) {
-      query += " AND (c.city_name LIKE ? OR co.country_name LIKE ? OR c.description LIKE ?)";
+      query +=
+        " AND (c.city_name LIKE ? OR co.country_name LIKE ? OR c.description LIKE ?)";
       const searchTerm = `%${filters.search}%`;
       params.push(searchTerm, searchTerm, searchTerm);
     }
@@ -98,7 +99,8 @@ class City {
       countParams.push(filters.isFeatured);
     }
     if (filters.search) {
-      countQuery += " AND (c.city_name LIKE ? OR co.country_name LIKE ? OR c.description LIKE ?)";
+      countQuery +=
+        " AND (c.city_name LIKE ? OR co.country_name LIKE ? OR c.description LIKE ?)";
       const searchTerm = `%${filters.search}%`;
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
@@ -225,7 +227,8 @@ class City {
 
   // Increment popularity score
   static async incrementPopularity(cityId) {
-    const query = "UPDATE cities SET popularity_score = popularity_score + 1 WHERE city_id = ?";
+    const query =
+      "UPDATE cities SET popularity_score = popularity_score + 1 WHERE city_id = ?";
     await executeQuery(query, [cityId]);
   }
 }

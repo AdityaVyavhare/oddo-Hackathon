@@ -57,14 +57,8 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const {
-      firstName,
-      lastName,
-      bio,
-      phoneNumber,
-      dateOfBirth,
-      nationality,
-    } = req.body;
+    const { firstName, lastName, bio, phoneNumber, dateOfBirth, nationality } =
+      req.body;
 
     // Build update object with only provided fields
     const updateData = {};

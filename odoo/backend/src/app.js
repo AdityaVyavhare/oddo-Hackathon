@@ -54,9 +54,9 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/countries", require("./routes/countries"));
 app.use("/api/cities", require("./routes/cities"));
-// Add more routes here as you build them
-// app.use('/api/trips', require('./routes/trips'));
-// app.use('/api/activities', require('./routes/activities'));
+app.use("/api/activities", require("./routes/activities"));
+app.use("/api/trips", require("./routes/trips"));
+app.use("/api/expense-categories", require("./routes/expenseCategories"));
 
 // Root endpoint
 app.get("/", (req, res) => {
@@ -66,8 +66,13 @@ app.get("/", (req, res) => {
     version: "1.0.0",
     endpoints: {
       auth: "/api/auth",
+      users: "/api/users",
+      countries: "/api/countries",
+      cities: "/api/cities",
+      activities: "/api/activities",
+      trips: "/api/trips",
+      expenseCategories: "/api/expense-categories",
       health: "/health",
-      docs: "/api-docs",
     },
   });
 });

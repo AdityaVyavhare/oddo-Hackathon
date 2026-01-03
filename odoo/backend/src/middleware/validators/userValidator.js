@@ -10,7 +10,9 @@ const updateProfileValidation = [
     .isLength({ min: 2, max: 100 })
     .withMessage("First name must be between 2 and 100 characters")
     .matches(/^[A-Za-z\s'-]+$/)
-    .withMessage("First name can only contain letters, spaces, hyphens and apostrophes"),
+    .withMessage(
+      "First name can only contain letters, spaces, hyphens and apostrophes"
+    ),
 
   body("lastName")
     .optional()
@@ -18,7 +20,9 @@ const updateProfileValidation = [
     .isLength({ min: 2, max: 100 })
     .withMessage("Last name must be between 2 and 100 characters")
     .matches(/^[A-Za-z\s'-]+$/)
-    .withMessage("Last name can only contain letters, spaces, hyphens and apostrophes"),
+    .withMessage(
+      "Last name can only contain letters, spaces, hyphens and apostrophes"
+    ),
 
   body("bio")
     .optional()
@@ -112,9 +116,7 @@ const deleteAccountValidation = [
  * User ID param validation
  */
 const userIdParamValidation = [
-  param("userId")
-    .isInt({ min: 1 })
-    .withMessage("Invalid user ID"),
+  param("userId").isInt({ min: 1 }).withMessage("Invalid user ID"),
 ];
 
 module.exports = {
