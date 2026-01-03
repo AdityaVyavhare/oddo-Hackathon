@@ -1,0 +1,614 @@
+# 🔐 GlobeTrotter Login API - Frontend Integration Guide
+
+## 📌 Quick Reference
+
+**Base URL:** `http://localhost:5000`  
+**Endpoint:** `POST /api/auth/login`  
+**Content-Type:** `application/json`  
+**Authentication:** Not required
+
+---
+
+## 🎯 Login Endpoint Documentation
+
+### **Endpoint Details**
+
+| Property | Value |
+|----------|-------|
+| **URL** | `/api/auth/login` |
+| **Method** | `POST` |
+| **Content-Type** | `application/json` |
+| **Authentication** | Not required |
+| **Rate Limit** | 100 requests per 15 minutes per IP |
+
+---
+
+## 📥 Request Parameters
+
+### **Required Fields**
+
+| Field Name | Data Type | Validation | Example | Description |
+|------------|-----------|------------|---------|-------------|
+| `identifier` | `string` | - Min 3 characters<br>- Max 255 characters<br>- Can be email or username | `"john.doe@gmail.com"` or `"johndoe"` | User's email or username |
+| `password` | `string` | - Required<br>- Cannot be empty | `"SecurePass123!"` | User's password |
+
+---
+
+## 📤 Response Format
+
+### **Success Response (200 OK)**
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "user": {
+      "userId": 1,
+      "email": "john.doe@gmail.com",
+      "username": "johndoe",
+      "firstName": "John",
+      "lastName": "Doe",
+      "profilePictureUrl": "/uploads/profiles/abc123.jpg",
+      "bio": "Travel enthusiast",
+      "phoneNumber": "+1234567890",
+      "dateOfBirth": "1990-01-15",
+      "nationality": "American",
+      "preferredCurrency": "USD",
+      "preferredLanguage": "en",
+      "emailVerified": true,
+      "isActive": true,
+      "isPremium": false,
+      "totalTripsCreated": 5,
+      "totalCountriesVisited": 12,
+      "lastLoginAt": "2026-01-03T10:30:00.000Z"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiam9obi5kb2VAZ21haWwuY29tIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNzA0MjczMDAwLCJleHAiOjE3MDQyNzY2MDB9.abc123xyz",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiam9obi5kb2VAZ21haWwuY29tIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNzA0MjczMDAwLCJleHAiOjE3MDQ4Nzc4MDB9.def456uvw",
+    "expiresIn": 3600
+  }
+}
+```
+
+### **Response Fields Explanation**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | `boolean` | Always `true` for successful login |
+| `message` | `string` | "Login successful" |
+| `data.user.userId` | `number` | Unique user ID |
+| `data.user.email` | `string` | User's email address |
+| `data.user.username` | `string` | User's username |
+| `data.user.firstName` | `string` | User's first name |
+| `data.user.lastName` | `string` | User's last name |
+| `data.user.profilePictureUrl` | `string\|null` | URL to profile picture (display in UI) |
+| `data.user.bio` | `string\|null` | User biography |
+| `data.user.phoneNumber` | `string\|null` | User's phone number |
+| `data.user.dateOfBirth` | `string\|null` | Date of birth (YYYY-MM-DD) |
+| `data.user.nationality` | `string\|null` | User's nationality |
+| `data.user.preferredCurrency` | `string` | Preferred currency code (USD, EUR, etc.) |
+| `data.user.preferredLanguage` | `string` | Preferred language code (en, es, etc.) |
+| `data.user.emailVerified` | `boolean` | Email verification status |
+| `data.user.isActive` | `boolean` | Account active status |
+| `data.user.isPremium` | `boolean` | Premium membership status |
+| `data.user.totalTripsCreated` | `number` | Number of trips created by user |
+| `data.user.totalCountriesVisited` | `number` | Number of countries visited |
+| `data.user.lastLoginAt` | `string` | ISO timestamp of last login |
+| `data.token` | `string` | JWT access token (valid for 1 hour) |
+| `data.refreshToken` | `string` | JWT refresh token (valid for 7 days) |
+| `data.expiresIn` | `number` | Token expiration time in seconds (3600 = 1 hour) |
+
+---
+
+## ❌ Error Responses
+
+### **Invalid Credentials (401 Unauthorized)**
+
+```json
+{
+  "success": false,
+  "message": "Invalid credentials"
+}
+```
+
+**Triggers:**
+- Email/username not found
+- Incorrect password
+
+### **Account Deactivated (403 Forbidden)**
+
+```json
+{
+  "success": false,
+  "message": "Account is deactivated. Please contact support."
+}
+```
+
+**Triggers:**
+- User account has been deactivated (`is_active = false`)
+
+### **Validation Error (400 Bad Request)**
+
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": [
+    {
+      "field": "identifier",
+      "message": "Email or username is required",
+      "value": ""
+    }
+  ]
+}
+```
+
+**Triggers:**
+- Missing identifier (email/username)
+- Missing password
+- Identifier too short/long
+
+### **Server Error (500 Internal Server Error)**
+
+```json
+{
+  "success": false,
+  "message": "Login failed. Please try again later."
+}
+```
+
+**Triggers:**
+- Database connection error
+- Unexpected server error
+
+---
+
+## 💻 Frontend Implementation Examples
+
+### **Example 1: Using Fetch API (Vanilla JavaScript)**
+
+```javascript
+const loginUser = async (identifier, password) => {
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        identifier: identifier, // Can be email or username
+        password: password
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Store tokens in localStorage
+      localStorage.setItem('accessToken', data.data.token);
+      localStorage.setItem('refreshToken', data.data.refreshToken);
+      localStorage.setItem('user', JSON.stringify(data.data.user));
+      
+      // Display user's profile picture
+      if (data.data.user.profilePictureUrl) {
+        document.getElementById('profilePic').src = 
+          `http://localhost:5000${data.data.user.profilePictureUrl}`;
+      }
+      
+      // Redirect to dashboard
+      window.location.href = '/dashboard';
+    } else {
+      // Show error message
+      alert(data.message);
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    alert('Network error. Please try again.');
+  }
+};
+
+// Usage
+loginUser('john.doe@gmail.com', 'SecurePass123!');
+// OR
+loginUser('johndoe', 'SecurePass123!');
+```
+
+### **Example 2: Using Axios**
+
+```javascript
+import axios from 'axios';
+
+const loginUser = async (identifier, password) => {
+  try {
+    const response = await axios.post(
+      'http://localhost:5000/api/auth/login',
+      {
+        identifier: identifier,
+        password: password
+      }
+    );
+
+    if (response.data.success) {
+      // Store authentication data
+      localStorage.setItem('accessToken', response.data.data.token);
+      localStorage.setItem('refreshToken', response.data.data.refreshToken);
+      localStorage.setItem('user', JSON.stringify(response.data.data.user));
+      
+      return response.data;
+    }
+  } catch (error) {
+    if (error.response) {
+      // Server responded with error
+      console.error('Login failed:', error.response.data.message);
+      throw new Error(error.response.data.message);
+    } else {
+      // Network error
+      console.error('Network error:', error.message);
+      throw error;
+    }
+  }
+};
+```
+
+### **Example 3: React Component**
+
+```jsx
+import React, { useState } from 'react';
+
+const LoginForm = () => {
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ identifier, password })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Store tokens
+        localStorage.setItem('accessToken', data.data.token);
+        localStorage.setItem('refreshToken', data.data.refreshToken);
+        localStorage.setItem('user', JSON.stringify(data.data.user));
+        
+        // Redirect to dashboard
+        window.location.href = '/dashboard';
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <div className="login-card">
+        <div className="profile-photo-placeholder">
+          <span>Photo</span>
+        </div>
+        
+        <form onSubmit={handleSubmit}>
+          {error && <div className="error-message">{error}</div>}
+          
+          <input
+            type="text"
+            placeholder="Username or Email"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            required
+            autoComplete="username"
+          />
+          
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
+          />
+          
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
+        
+        <div className="login-footer">
+          <a href="/forgot-password">Forgot Password?</a>
+          <a href="/register">Don't have an account? Sign up</a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginForm;
+```
+
+### **Example 4: With Profile Picture Display**
+
+```javascript
+const loginAndDisplayProfile = async (identifier, password) => {
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ identifier, password })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      const user = data.data.user;
+      
+      // Store tokens
+      localStorage.setItem('accessToken', data.data.token);
+      localStorage.setItem('refreshToken', data.data.refreshToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      // Display profile picture
+      const profilePicElement = document.getElementById('profile-picture');
+      if (user.profilePictureUrl) {
+        profilePicElement.src = `http://localhost:5000${user.profilePictureUrl}`;
+      } else {
+        // Show default avatar with initials
+        profilePicElement.src = generateAvatarUrl(user.firstName, user.lastName);
+      }
+      
+      // Display user info
+      document.getElementById('user-name').textContent = 
+        `${user.firstName} ${user.lastName}`;
+      document.getElementById('username').textContent = 
+        `@${user.username}`;
+      
+      // Show stats
+      document.getElementById('total-trips').textContent = 
+        user.totalTripsCreated;
+      document.getElementById('countries-visited').textContent = 
+        user.totalCountriesVisited;
+      
+      return true;
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    return false;
+  }
+};
+
+// Helper function to generate avatar from initials
+function generateAvatarUrl(firstName, lastName) {
+  const initials = `${firstName[0]}${lastName[0]}`.toUpperCase();
+  return `https://ui-avatars.com/api/?name=${initials}&background=random`;
+}
+```
+
+---
+
+## 🔐 Using the Authentication Token
+
+After successful login, use the returned JWT token for authenticated requests:
+
+```javascript
+// Example: Fetch user's trips
+const getUserTrips = async () => {
+  const token = localStorage.getItem('accessToken');
+  
+  const response = await fetch('http://localhost:5000/api/trips', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  
+  const data = await response.json();
+  return data;
+};
+```
+
+---
+
+## 🔄 Token Refresh (When Access Token Expires)
+
+```javascript
+const refreshAccessToken = async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/refresh', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refreshToken })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      localStorage.setItem('accessToken', data.data.token);
+      return data.data.token;
+    } else {
+      // Refresh token expired, redirect to login
+      localStorage.clear();
+      window.location.href = '/login';
+    }
+  } catch (error) {
+    console.error('Token refresh error:', error);
+    localStorage.clear();
+    window.location.href = '/login';
+  }
+};
+```
+
+---
+
+## 🎨 UI/UX Recommendations
+
+### **Login Screen Layout (Based on Mockup)**
+
+1. **Profile Photo Placeholder:**
+   - Display a circular placeholder with text "Photo"
+   - After login, show user's profile picture
+   - If no profile picture, show initials
+
+2. **Username/Email Input:**
+   - Placeholder: "Username or Email"
+   - Accept both email and username
+   - Auto-detect format (@ symbol for email)
+
+3. **Password Input:**
+   - Placeholder: "Password"
+   - Type: password (hidden)
+   - Optional: Show/hide password toggle
+
+4. **Login Button:**
+   - Text: "Login"
+   - Disable while loading
+   - Show loading spinner during request
+
+5. **Additional Features:**
+   - "Forgot Password?" link
+   - "Don't have an account? Sign up" link
+   - Remember me checkbox (optional)
+   - Social login buttons (optional)
+
+---
+
+## ⚠️ Security Best Practices
+
+### **Frontend Security**
+
+1. **Never store passwords:**
+   ```javascript
+   // ❌ DON'T DO THIS
+   localStorage.setItem('password', password);
+   
+   // ✅ Only store tokens
+   localStorage.setItem('accessToken', token);
+   ```
+
+2. **Clear sensitive data on logout:**
+   ```javascript
+   const logout = () => {
+     localStorage.removeItem('accessToken');
+     localStorage.removeItem('refreshToken');
+     localStorage.removeItem('user');
+     window.location.href = '/login';
+   };
+   ```
+
+3. **Handle token expiration:**
+   ```javascript
+   axios.interceptors.response.use(
+     response => response,
+     async error => {
+       if (error.response?.status === 401) {
+         // Token expired, try to refresh
+         await refreshAccessToken();
+       }
+       return Promise.reject(error);
+     }
+   );
+   ```
+
+4. **Use HTTPS in production:**
+   - Always use `https://` for production API calls
+   - Never send credentials over unsecured connections
+
+---
+
+## 📋 Testing Checklist
+
+- [ ] Login with valid email
+- [ ] Login with valid username
+- [ ] Login with invalid credentials
+- [ ] Login with deactivated account
+- [ ] Login with empty fields
+- [ ] Verify token is stored correctly
+- [ ] Verify user data is returned
+- [ ] Verify profile picture URL is correct
+- [ ] Test "Remember me" functionality
+- [ ] Test logout functionality
+- [ ] Test token refresh
+- [ ] Test concurrent login sessions
+- [ ] Verify last login timestamp updates
+
+---
+
+## 🚀 Quick Test Commands
+
+### Using cURL
+
+```bash
+# Login with email
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "test@example.com",
+    "password": "SecurePass123!"
+  }'
+
+# Login with username
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "johndoe",
+    "password": "SecurePass123!"
+  }'
+```
+
+### Using Postman
+
+1. Set method to `POST`
+2. URL: `http://localhost:5000/api/auth/login`
+3. Headers: `Content-Type: application/json`
+4. Body (raw JSON):
+```json
+{
+  "identifier": "test@example.com",
+  "password": "SecurePass123!"
+}
+```
+
+---
+
+## 🆚 Login vs Registration
+
+| Feature | Login | Registration |
+|---------|-------|--------------|
+| **Endpoint** | `/api/auth/login` | `/api/auth/register` |
+| **Required Fields** | 2 (identifier, password) | 7+ fields |
+| **Content-Type** | `application/json` | `multipart/form-data` or `application/json` |
+| **Returns** | User + tokens | User + tokens |
+| **Creates Data** | No | Yes (new user) |
+| **File Upload** | No | Yes (profile picture) |
+
+---
+
+## 📞 Support
+
+For any issues or questions, contact the backend team or refer to the main API documentation.
+
+**API Version:** 1.0.0  
+**Last Updated:** January 3, 2026

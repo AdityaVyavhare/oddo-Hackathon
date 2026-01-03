@@ -161,15 +161,25 @@ const register = async (req, res) => {
  * Login user
  * @route POST /api/auth/login
  * @access Public
+ * @desc Login with email or username
  */
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { identifier, password } = req.body;
 
-    // Find user by email
-    const user = await User.findByEmail(email);
+    // Determine if identifier is email or username
+    const isEmail = identifier.includes("@");
+
+    // Find user by email or username
+    let user;
+    if (isEmail) {
+      user = await User.findByEmail(identifier);
+    } else {
+      user = await User.findByUsername(identifier);
+    }
+
     if (!user) {
-      return ApiResponse.unauthorized(res, "Invalid email or password");
+      return ApiResponse.unauthorized(res, "Invalid credentials");
     }
 
     // Check if user is active
@@ -183,7 +193,7 @@ const login = async (req, res) => {
     // Verify password
     const isPasswordValid = await comparePassword(password, user.password_hash);
     if (!isPasswordValid) {
-      return ApiResponse.unauthorized(res, "Invalid email or password");
+      return ApiResponse.unauthorized(res, "Invalid credentials");
     }
 
     // Update last login timestamp
@@ -208,9 +218,18 @@ const login = async (req, res) => {
         firstName: user.first_name,
         lastName: user.last_name,
         profilePictureUrl: user.profile_picture_url,
+        bio: user.bio,
+        phoneNumber: user.phone_number,
+        dateOfBirth: user.date_of_birth,
+        nationality: user.nationality,
+        preferredCurrency: user.preferred_currency,
+        preferredLanguage: user.preferred_language,
         emailVerified: user.email_verified,
         isActive: user.is_active,
         isPremium: user.is_premium,
+        totalTripsCreated: user.total_trips_created,
+        totalCountriesVisited: user.total_countries_visited,
+        lastLoginAt: user.last_login_at,
       },
       token: accessToken,
       refreshToken: refreshToken,

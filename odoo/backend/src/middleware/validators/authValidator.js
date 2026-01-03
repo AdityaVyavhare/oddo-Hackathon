@@ -155,17 +155,21 @@ const registerValidation = [
 
 /**
  * Login validation rules
+ * Supports login with either email or username
  */
 const loginValidation = [
-  body("email")
+  body("identifier")
     .trim()
     .notEmpty()
-    .withMessage("Email is required")
-    .isEmail()
-    .withMessage("Invalid email format")
-    .normalizeEmail(),
+    .withMessage("Email or username is required")
+    .isLength({ min: 3, max: 255 })
+    .withMessage("Email or username must be between 3 and 255 characters"),
 
-  body("password").notEmpty().withMessage("Password is required"),
+  body("password")
+    .notEmpty()
+    .withMessage("Password is required")
+    .isLength({ min: 1 })
+    .withMessage("Password cannot be empty"),
 ];
 
 /**
