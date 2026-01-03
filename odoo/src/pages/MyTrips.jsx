@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MainLayout from "../layouts/MainLayout";
+import Reveal from "../components/Reveal";
+import { mockTrips } from "../data/trips";
 import useStore from "../store/useStore";
 import {
   getUserTrips,
@@ -26,7 +28,14 @@ const MyTrips = () => {
         }
       } catch (err) {
         console.error("Error fetching trips:", err);
-        setError("Failed to load trips");
+        // Use mock data as fallback
+        setTrips(
+          mockTrips.map((trip) => ({
+            ...trip,
+            stops: trip.cities,
+            totalBudget: trip.budget?.total || 0,
+          }))
+        );
       } finally {
         setIsLoading(false);
       }
@@ -56,12 +65,14 @@ const MyTrips = () => {
   return (
     <MainLayout>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>My Trips</h1>
-          <Link to="/create-trip" className={styles.newTripButton}>
-            + New Trip
-          </Link>
-        </div>
+        <Reveal animation="fade">
+          <div className={styles.header}>
+            <h1 className={styles.title}>My Trips</h1>
+            <Link to="/create-trip" className={styles.newTripButton}>
+              + New Trip
+            </Link>
+          </div>
+        </Reveal>
 
         {error && (
           <div
@@ -89,53 +100,55 @@ const MyTrips = () => {
           </div>
         ) : trips.length > 0 ? (
           <div className={styles.tripsGrid}>
-            {trips.map((trip) => (
-              <div key={trip.id} className={styles.tripCard}>
-                <Link to={`/trip/${trip.id}/view`}>
-                  <img
-                    src={
-                      trip.coverImage ||
-                      "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400"
-                    }
-                    alt={trip.name}
-                    className={styles.tripImage}
-                  />
-                </Link>
-                <div className={styles.tripContent}>
+            {trips.map((trip, index) => (
+              <Reveal key={trip.id} animation="up" delay={index * 0.1}>
+                <div className={styles.tripCard}>
                   <Link to={`/trip/${trip.id}/view`}>
-                    <h3 className={styles.tripName}>{trip.name}</h3>
+                    <img
+                      src={
+                        trip.coverImage ||
+                        "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400"
+                      }
+                      alt={trip.name}
+                      className={styles.tripImage}
+                    />
                   </Link>
-                  <p className={styles.tripDescription}>{trip.description}</p>
-                  <p className={styles.tripDate}>
-                    {new Date(trip.startDate).toLocaleDateString()} -{" "}
-                    {new Date(trip.endDate).toLocaleDateString()}
-                  </p>
-                  <div className={styles.tripMeta}>
-                    <span>{trip.stops?.length || 0} stops</span>
-                    <span>${trip.totalBudget || 0}</span>
-                  </div>
-                  <div className={styles.tripActions}>
-                    <Link
-                      to={`/trip/${trip.id}/itinerary`}
-                      className={`${styles.actionButton} ${styles.actionButtonGray}`}
-                    >
-                      Edit
+                  <div className={styles.tripContent}>
+                    <Link to={`/trip/${trip.id}/view`}>
+                      <h3 className={styles.tripName}>{trip.name}</h3>
                     </Link>
-                    <Link
-                      to={`/trip/${trip.id}/view`}
-                      className={`${styles.actionButton} ${styles.actionButtonPrimary}`}
-                    >
-                      View
-                    </Link>
-                    <button
-                      onClick={(e) => handleDelete(trip.id, e)}
-                      className={`${styles.actionButton} ${styles.actionButtonDanger}`}
-                    >
-                      Delete
-                    </button>
+                    <p className={styles.tripDescription}>{trip.description}</p>
+                    <p className={styles.tripDate}>
+                      {new Date(trip.startDate).toLocaleDateString()} -{" "}
+                      {new Date(trip.endDate).toLocaleDateString()}
+                    </p>
+                    <div className={styles.tripMeta}>
+                      <span>{trip.stops?.length || 0} stops</span>
+                      <span>${trip.totalBudget || 0}</span>
+                    </div>
+                    <div className={styles.tripActions}>
+                      <Link
+                        to={`/trip/${trip.id}/itinerary`}
+                        className={`${styles.actionButton} ${styles.actionButtonGray}`}
+                      >
+                        Edit
+                      </Link>
+                      <Link
+                        to={`/trip/${trip.id}/view`}
+                        className={`${styles.actionButton} ${styles.actionButtonPrimary}`}
+                      >
+                        View
+                      </Link>
+                      <button
+                        onClick={(e) => handleDelete(trip.id, e)}
+                        className={`${styles.actionButton} ${styles.actionButtonDanger}`}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         ) : (

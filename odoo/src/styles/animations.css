@@ -89,7 +89,8 @@
 
 /* Pulse animation */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -109,7 +110,8 @@
 
 /* Bounce animation */
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -172,14 +174,115 @@
 
 /* Loading skeleton */
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    #f0f0f0 25%,
-    #e0e0e0 50%,
-    #f0f0f0 75%
-  );
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 
+/* ==========================================
+   INTERSECTION OBSERVER REVEAL ANIMATIONS
+   ========================================== */
 
+/* Hidden state before reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Different reveal directions */
+.revealUp {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.revealUp.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.revealDown {
+  opacity: 0;
+  transform: translateY(-40px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.revealDown.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.revealLeft {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.revealLeft.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.revealRight {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.revealRight.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale reveal */
+.revealScale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.revealScale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Fade reveal */
+.revealFade {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.revealFade.visible {
+  opacity: 1;
+}
+
+/* Stagger delays for multiple items */
+.revealDelay1 {
+  transition-delay: 0.1s;
+}
+
+.revealDelay2 {
+  transition-delay: 0.2s;
+}
+
+.revealDelay3 {
+  transition-delay: 0.3s;
+}
+
+.revealDelay4 {
+  transition-delay: 0.4s;
+}
+
+.revealDelay5 {
+  transition-delay: 0.5s;
+}
+
+.revealDelay6 {
+  transition-delay: 0.6s;
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import Reveal from "../components/Reveal";
 import useStore from "../store/useStore";
 import { createTrip } from "../services/tripService";
 import styles from "./CreateTrip.module.css";
@@ -73,7 +74,9 @@ const CreateTrip = () => {
   return (
     <MainLayout>
       <div className={styles.container}>
-        <h1 className={styles.title}>Create New Trip</h1>
+        <Reveal animation="fade">
+          <h1 className={styles.title}>Create New Trip</h1>
+        </Reveal>
 
         {error && (
           <div
@@ -89,109 +92,111 @@ const CreateTrip = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="name" className={styles.label}>
-              Trip Name *
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className={styles.input}
-              placeholder="e.g., European Adventure"
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="description" className={styles.label}>
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows={4}
-              className={styles.textarea}
-              placeholder="Tell us about your trip..."
-            />
-          </div>
-
-          <div className={styles.dateGrid}>
+        <Reveal animation="up" delay={0.1}>
+          <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.formGroup}>
-              <label htmlFor="startDate" className={styles.label}>
-                Start Date *
+              <label htmlFor="name" className={styles.label}>
+                Trip Name *
               </label>
               <input
-                type="date"
-                id="startDate"
-                name="startDate"
-                value={formData.startDate}
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 required
                 className={styles.input}
+                placeholder="e.g., European Adventure"
               />
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="endDate" className={styles.label}>
-                End Date *
+              <label htmlFor="description" className={styles.label}>
+                Description
               </label>
-              <input
-                type="date"
-                id="endDate"
-                name="endDate"
-                value={formData.endDate}
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
-                required
-                min={formData.startDate}
-                className={styles.input}
+                rows={4}
+                className={styles.textarea}
+                placeholder="Tell us about your trip..."
               />
             </div>
-          </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="coverImage" className={styles.label}>
-              Cover Image
-            </label>
-            <input
-              type="file"
-              id="coverImage"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className={styles.input}
-            />
-            {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Cover preview"
-                className={styles.imagePreview}
+            <div className={styles.dateGrid}>
+              <div className={styles.formGroup}>
+                <label htmlFor="startDate" className={styles.label}>
+                  Start Date *
+                </label>
+                <input
+                  type="date"
+                  id="startDate"
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={handleChange}
+                  required
+                  className={styles.input}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="endDate" className={styles.label}>
+                  End Date *
+                </label>
+                <input
+                  type="date"
+                  id="endDate"
+                  name="endDate"
+                  value={formData.endDate}
+                  onChange={handleChange}
+                  required
+                  min={formData.startDate}
+                  className={styles.input}
+                />
+              </div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="coverImage" className={styles.label}>
+                Cover Image
+              </label>
+              <input
+                type="file"
+                id="coverImage"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className={styles.input}
               />
-            )}
-          </div>
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Cover preview"
+                  className={styles.imagePreview}
+                />
+              )}
+            </div>
 
-          <div className={styles.buttonGroup}>
-            <button
-              type="submit"
-              className={`${styles.button} ${styles.buttonPrimary}`}
-              disabled={isLoading}
-            >
-              {isLoading ? "Creating Trip..." : "Create Trip"}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate("/my-trips")}
-              className={`${styles.button} ${styles.buttonSecondary}`}
-              disabled={isLoading}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+            <div className={styles.buttonGroup}>
+              <button
+                type="submit"
+                className={`${styles.button} ${styles.buttonPrimary}`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Creating Trip..." : "Create Trip"}
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/my-trips")}
+                className={`${styles.button} ${styles.buttonSecondary}`}
+                disabled={isLoading}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </Reveal>
       </div>
     </MainLayout>
   );

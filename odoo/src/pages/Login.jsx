@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
+import Reveal from "../components/Reveal";
 import { login } from "../services/authService";
 import useStore from "../store/useStore";
 import styles from "./Login.module.css";
@@ -40,67 +41,69 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <div className={styles.container}>
-        <h2 className={styles.title}>Welcome Back</h2>
+      <Reveal animation="scale" delay={0.2}>
+        <div className={styles.container}>
+          <h2 className={styles.title}>Welcome Back</h2>
 
-        {error && <div className={styles.error}>{error}</div>}
+          {error && <div className={styles.error}>{error}</div>}
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="email" className={styles.label}>
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className={styles.input}
-              placeholder="you@example.com"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.formGroup}>
+              <label htmlFor="email" className={styles.label}>
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className={styles.input}
+                placeholder="you@example.com"
+              />
+            </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.label}>
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className={styles.input}
-              placeholder="••••••••"
-            />
-          </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="password" className={styles.label}>
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className={styles.input}
+                placeholder="••••••••"
+              />
+            </div>
 
-          <div style={{ textAlign: "right" }}>
-            <Link to="/forgot-password" className={styles.forgotLink}>
-              Forgot password?
+            <div style={{ textAlign: "right" }}>
+              <Link to="/forgot-password" className={styles.forgotLink}>
+                Forgot password?
+              </Link>
+            </div>
+
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Log In"}
+            </button>
+          </form>
+
+          <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
+            <Link to="/signup" className={styles.toggleButton}>
+              Don't have an account? Sign up
             </Link>
           </div>
 
-          <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={isLoading}
-          >
-            {isLoading ? "Logging in..." : "Log In"}
-          </button>
-        </form>
-
-        <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
-          <Link to="/signup" className={styles.toggleButton}>
-            Don't have an account? Sign up
-          </Link>
+          <div className={styles.demoText}>
+            <p>Test with backend API or create a new account</p>
+          </div>
         </div>
-
-        <div className={styles.demoText}>
-          <p>Test with backend API or create a new account</p>
-        </div>
-      </div>
+      </Reveal>
     </AuthLayout>
   );
 };

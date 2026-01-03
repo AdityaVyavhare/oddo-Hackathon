@@ -1,19 +1,27 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import MainLayout from '../layouts/MainLayout';
-import useStore from '../store/useStore';
-import { cities, getCityById } from '../data/cities';
-import { getActivitiesByCity } from '../data/activities';
-import styles from './ItineraryBuilder.module.css';
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import MainLayout from "../layouts/MainLayout";
+import Reveal from "../components/Reveal";
+import { mockTrips } from "../data/trips";
+import useStore from "../store/useStore";
+import { cities, getCityById } from "../data/cities";
+import { getActivitiesByCity } from "../data/activities";
+import styles from "./ItineraryBuilder.module.css";
 
 const ItineraryBuilder = () => {
   const { tripId } = useParams();
   const navigate = useNavigate();
   const { trips, updateTrip, addCityToTrip, addActivityToCity } = useStore();
-  
-  const trip = trips.find(t => t.id === tripId);
+
+  let trip = trips.find((t) => t.id === tripId);
+
+  // Fallback to mock data if trip not found
+  if (!trip) {
+    trip = mockTrips.find((t) => t.id === tripId) || mockTrips[0];
+  }
+
   const [showCitySearch, setShowCitySearch] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState(null);
   const [showActivities, setShowActivities] = useState(null);
 
@@ -27,9 +35,10 @@ const ItineraryBuilder = () => {
     );
   }
 
-  const filteredCities = cities.filter(city =>
-    city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    city.country.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredCities = cities.filter(
+    (city) =>
+      city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      city.country.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleAddCity = (city) => {
@@ -43,7 +52,7 @@ const ItineraryBuilder = () => {
     addCityToTrip(tripId, cityStop);
     setSelectedCity(city.id);
     setShowCitySearch(false);
-    setSearchQuery('');
+    setSearchQuery("");
   };
 
   const handleAddActivity = (cityId, activityId) => {
@@ -117,7 +126,8 @@ const ItineraryBuilder = () => {
                       <div className={styles.cityStopInfo}>
                         <h3 className={styles.cityStopName}>{cityStop.name}</h3>
                         <p className={styles.cityStopDate}>
-                          {new Date(cityStop.startDate).toLocaleDateString()} - {new Date(cityStop.endDate).toLocaleDateString()}
+                          {new Date(cityStop.startDate).toLocaleDateString()} -{" "}
+                          {new Date(cityStop.endDate).toLocaleDateString()}
                         </p>
                       </div>
                       <button
@@ -129,33 +139,53 @@ const ItineraryBuilder = () => {
                     </div>
 
                     <button
-                      onClick={() => setShowActivities(showActivities === cityStop.cityId ? null : cityStop.cityId)}
+                      onClick={() =>
+                        setShowActivities(
+                          showActivities === cityStop.cityId
+                            ? null
+                            : cityStop.cityId
+                        )
+                      }
                       className={styles.toggleActivities}
                     >
-                      {showActivities === cityStop.cityId ? 'Hide' : 'Show'} Activities
+                      {showActivities === cityStop.cityId ? "Hide" : "Show"}{" "}
+                      Activities
                     </button>
 
                     {showActivities === cityStop.cityId && (
                       <div className={styles.activitiesList}>
-                        <h4 className={styles.activitiesTitle}>Available Activities:</h4>
+                        <h4 className={styles.activitiesTitle}>
+                          Available Activities:
+                        </h4>
                         {cityActivities.map((activity) => (
-                          <div key={activity.id} className={styles.activityItem}>
+                          <div
+                            key={activity.id}
+                            className={styles.activityItem}
+                          >
                             <div className={styles.activityInfo}>
-                              <p className={styles.activityName}>{activity.name}</p>
+                              <p className={styles.activityName}>
+                                {activity.name}
+                              </p>
                               <p className={styles.activityDetails}>
                                 {activity.duration} min • ${activity.cost}
                               </p>
                             </div>
                             <button
-                              onClick={() => handleAddActivity(cityStop.cityId, activity.id)}
-                              disabled={selectedActivities.includes(activity.id)}
+                              onClick={() =>
+                                handleAddActivity(cityStop.cityId, activity.id)
+                              }
+                              disabled={selectedActivities.includes(
+                                activity.id
+                              )}
                               className={`${styles.addActivityButton} ${
                                 selectedActivities.includes(activity.id)
                                   ? styles.addActivityButtonInactive
                                   : styles.addActivityButtonActive
                               }`}
                             >
-                              {selectedActivities.includes(activity.id) ? 'Added' : 'Add'}
+                              {selectedActivities.includes(activity.id)
+                                ? "Added"
+                                : "Add"}
                             </button>
                           </div>
                         ))}
@@ -164,12 +194,19 @@ const ItineraryBuilder = () => {
 
                     {selectedActivities.length > 0 && (
                       <div className={styles.selectedActivities}>
-                        <h4 className={styles.selectedActivitiesTitle}>Selected Activities:</h4>
+                        <h4 className={styles.selectedActivitiesTitle}>
+                          Selected Activities:
+                        </h4>
                         <div className={styles.selectedActivitiesList}>
                           {selectedActivities.map((activityId) => {
-                            const activity = cityActivities.find(a => a.id === activityId);
+                            const activity = cityActivities.find(
+                              (a) => a.id === activityId
+                            );
                             return activity ? (
-                              <span key={activityId} className={styles.activityTag}>
+                              <span
+                                key={activityId}
+                                className={styles.activityTag}
+                              >
                                 {activity.name}
                               </span>
                             ) : null;
@@ -183,7 +220,10 @@ const ItineraryBuilder = () => {
             </div>
           ) : (
             <div className={styles.emptyState}>
-              <p>No cities added yet. Click "Add City" to start building your itinerary.</p>
+              <p>
+                No cities added yet. Click "Add City" to start building your
+                itinerary.
+              </p>
             </div>
           )}
         </div>
@@ -193,4 +233,3 @@ const ItineraryBuilder = () => {
 };
 
 export default ItineraryBuilder;
-

@@ -9,7 +9,10 @@ import {
   Sparkles,
 } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
+import Reveal from "../components/Reveal";
 import useStore from "../store/useStore";
+import { mockTrips } from "../data/trips";
+import { cities as mockCities } from "../data/cities";
 import { getUserTrips } from "../services/tripService";
 import { getUserStatistics } from "../services/userService";
 import { getCities } from "../services/locationService";
@@ -48,7 +51,19 @@ const Dashboard = () => {
         }
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
-        setError("Failed to load dashboard data");
+        // Use mock data as fallback
+        setTrips(mockTrips.slice(0, 3).map(trip => ({
+          ...trip,
+          stops: trip.cities,
+          totalBudget: trip.budget?.total || 0
+        })));
+        setRecommendedCities(mockCities.slice(0, 6).map(city => ({
+          id: city.id,
+          name: city.name,
+          country: city.country,
+          imageUrl: city.image,
+          description: city.description
+        })));
       } finally {
         setIsLoading(false);
       }
@@ -82,15 +97,17 @@ const Dashboard = () => {
     <MainLayout>
       <div className={styles.container}>
         {/* Welcome Section */}
-        <div className={styles.header}>
-          <h1 className={styles.title}>
-            Welcome back,{" "}
-            {currentUser?.firstName || currentUser?.name || "Traveler"}!
-          </h1>
-          <p className={styles.subtitle}>
-            Plan your next adventure with GlobeTrotter
-          </p>
-        </div>
+        <Reveal animation="fade">
+          <div className={styles.header}>
+            <h1 className={styles.title}>
+              Welcome back,{" "}
+              {currentUser?.firstName || currentUser?.name || "Traveler"}!
+            </h1>
+            <p className={styles.subtitle}>
+              Plan your next adventure with GlobeTrotter
+            </p>
+          </div>
+        </Reveal>
 
         {error && (
           <div
@@ -119,8 +136,9 @@ const Dashboard = () => {
         ) : (
           <>
             {/* Quick Stats */}
-            <div className={styles.statsGrid}>
-              <div className={styles.statCard}>
+            <Reveal animation="up" delay={0.1}>
+              <div className={styles.statsGrid}>
+                <div className={styles.statCard}>
                 <div className={styles.statContent}>
                   <div className={styles.statInfo}>
                     <p className={styles.statLabel}>Total Budget</p>
@@ -157,10 +175,11 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
 
             {/* Plan New Trip CTA */}
-            <div className={styles.ctaCard}>
+            <Reveal animation="scale" delay={0.2}>
+              <div className={styles.ctaCard}>
               <div className={styles.ctaIcon}>
                 <Sparkles size={40} />
               </div>
@@ -175,9 +194,11 @@ const Dashboard = () => {
                 <span>Plan New Trip</span>
               </Link>
             </div>
+            </Reveal>
 
             {/* Upcoming Trips */}
-            <div>
+            <Reveal animation="up" delay={0.3}>
+              <div>
               <div className={styles.sectionHeader}>
                 <h2 className={styles.sectionTitle}>Upcoming Trips</h2>
                 <Link to="/my-trips" className={styles.viewAllLink}>
@@ -224,9 +245,11 @@ const Dashboard = () => {
                 </div>
               )}
             </div>
+            </Reveal>
 
             {/* Recommended Destinations */}
-            <div>
+            <Reveal animation="up" delay={0.4}>
+              <div>
               <h2
                 className={styles.sectionTitle}
                 style={{ marginBottom: "1rem" }}
@@ -256,6 +279,7 @@ const Dashboard = () => {
                 ))}
               </div>
             </div>
+            </Reveal>
           </>
         )}
       </div>

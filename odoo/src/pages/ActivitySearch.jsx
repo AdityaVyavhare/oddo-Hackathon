@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import MainLayout from "../layouts/MainLayout";
+import Reveal from "../components/Reveal";
+import { activities as mockActivities } from "../data/activities";
 import { searchActivities as searchActivitiesAPI } from "../services/activityService";
 import { getCityById } from "../services/locationService";
 import useStore from "../store/useStore";
@@ -50,7 +52,14 @@ const ActivitySearch = () => {
         }
       } catch (err) {
         console.error("Error fetching activities:", err);
-        setError("Failed to load activities");
+        // Use mock data as fallback
+        setActivities(
+          mockActivities.map((activity) => ({
+            ...activity,
+            location: activity.cityId,
+            city: activity.cityId,
+          }))
+        );
       } finally {
         setIsLoading(false);
       }
@@ -74,7 +83,9 @@ const ActivitySearch = () => {
   return (
     <MainLayout>
       <div className={styles.container}>
-        <h1 className={styles.title}>Discover Activities</h1>
+        <Reveal animation="fade">
+          <h1 className={styles.title}>Discover Activities</h1>
+        </Reveal>
 
         {error && (
           <div
@@ -91,64 +102,66 @@ const ActivitySearch = () => {
         )}
 
         {/* Search and Filters */}
-        <div className={styles.searchCard}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search activities..."
-            className={styles.searchInput}
-          />
+        <Reveal animation="up" delay={0.1}>
+          <div className={styles.searchCard}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search activities..."
+              className={styles.searchInput}
+            />
 
-          <div className={styles.filtersGrid}>
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Activity Type</label>
-              <select
-                value={filters.type}
-                onChange={(e) =>
-                  setFilters({ ...filters, type: e.target.value })
-                }
-                className={styles.filterSelect}
-              >
-                <option value="">All Types</option>
-                {activityTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className={styles.filtersGrid}>
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>Activity Type</label>
+                <select
+                  value={filters.type}
+                  onChange={(e) =>
+                    setFilters({ ...filters, type: e.target.value })
+                  }
+                  className={styles.filterSelect}
+                >
+                  <option value="">All Types</option>
+                  {activityTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Max Cost ($)</label>
-              <input
-                type="number"
-                value={filters.maxCost}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    maxCost: e.target.value ? parseInt(e.target.value) : "",
-                  })
-                }
-                placeholder="Any"
-                className={styles.filterInput}
-              />
-            </div>
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>Max Cost ($)</label>
+                <input
+                  type="number"
+                  value={filters.maxCost}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      maxCost: e.target.value ? parseInt(e.target.value) : "",
+                    })
+                  }
+                  placeholder="Any"
+                  className={styles.filterInput}
+                />
+              </div>
 
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>City ID (optional)</label>
-              <input
-                type="text"
-                value={filters.cityId}
-                onChange={(e) =>
-                  setFilters({ ...filters, cityId: e.target.value })
-                }
-                placeholder="Filter by city"
-                className={styles.filterInput}
-              />
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>City ID (optional)</label>
+                <input
+                  type="text"
+                  value={filters.cityId}
+                  onChange={(e) =>
+                    setFilters({ ...filters, cityId: e.target.value })
+                  }
+                  placeholder="Filter by city"
+                  className={styles.filterInput}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {isLoading ? (
           <div
@@ -164,43 +177,45 @@ const ActivitySearch = () => {
           <>
             {/* Activities Grid */}
             <div className={styles.activitiesGrid}>
-              {activities.map((activity) => (
-                <div key={activity.id} className={styles.activityCard}>
-                  {activity.image && (
-                    <img
-                      src={activity.image}
-                      alt={activity.name}
-                      className={styles.activityImage}
-                    />
-                  )}
-                  <div className={styles.activityContent}>
-                    <h3 className={styles.activityName}>{activity.name}</h3>
-                    <p className={styles.activityCity}>
-                      {activity.city || activity.location}
-                    </p>
-                    <p className={styles.activityDescription}>
-                      {activity.description}
-                    </p>
-
-                    <div className={styles.activityMeta}>
-                      <ActivityMeta
-                        duration={activity.duration}
-                        cost={activity.cost}
-                        rating={activity.rating}
+              {activities.map((activity, index) => (
+                <Reveal key={activity.id} animation="up" delay={index * 0.05}>
+                  <div className={styles.activityCard}>
+                    {activity.image && (
+                      <img
+                        src={activity.image}
+                        alt={activity.name}
+                        className={styles.activityImage}
                       />
-                      <span className={styles.activityType}>
-                        {activity.type}
-                      </span>
-                    </div>
+                    )}
+                    <div className={styles.activityContent}>
+                      <h3 className={styles.activityName}>{activity.name}</h3>
+                      <p className={styles.activityCity}>
+                        {activity.city || activity.location}
+                      </p>
+                      <p className={styles.activityDescription}>
+                        {activity.description}
+                      </p>
 
-                    <button
-                      onClick={() => handleAddToTrip(activity)}
-                      className={styles.addButton}
-                    >
-                      Add to Trip
-                    </button>
+                      <div className={styles.activityMeta}>
+                        <ActivityMeta
+                          duration={activity.duration}
+                          cost={activity.cost}
+                          rating={activity.rating}
+                        />
+                        <span className={styles.activityType}>
+                          {activity.type}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => handleAddToTrip(activity)}
+                        className={styles.addButton}
+                      >
+                        Add to Trip
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
 

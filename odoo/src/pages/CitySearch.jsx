@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DollarSign, Star } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
+import Reveal from "../components/Reveal";
+import { cities as mockCities } from "../data/cities";
 import {
   getCities,
   searchCities as searchCitiesAPI,
@@ -77,7 +79,9 @@ const CitySearch = () => {
   return (
     <MainLayout>
       <div className={styles.container}>
-        <h1 className={styles.title}>Discover Cities</h1>
+        <Reveal animation="fade">
+          <h1 className={styles.title}>Discover Cities</h1>
+        </Reveal>
 
         {error && (
           <div
@@ -94,54 +98,58 @@ const CitySearch = () => {
         )}
 
         {/* Search and Filters */}
-        <div className={styles.searchCard}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search cities..."
-            className={styles.searchInput}
-          />
+        <Reveal animation="up" delay={0.1}>
+          <div className={styles.searchCard}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search cities..."
+              className={styles.searchInput}
+            />
 
-          <div className={styles.filtersGrid}>
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Filter by Country</label>
-              <select
-                value={filters.country}
-                onChange={(e) =>
-                  setFilters({ ...filters, country: e.target.value })
-                }
-                className={styles.filterSelect}
-              >
-                <option value="">All Countries</option>
-                {countries.map((country) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className={styles.filtersGrid}>
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>Filter by Country</label>
+                <select
+                  value={filters.country}
+                  onChange={(e) =>
+                    setFilters({ ...filters, country: e.target.value })
+                  }
+                  className={styles.filterSelect}
+                >
+                  <option value="">All Countries</option>
+                  {countries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Filter by Continent</label>
-              <select
-                value={filters.continent}
-                onChange={(e) =>
-                  setFilters({ ...filters, continent: e.target.value })
-                }
-                className={styles.filterSelect}
-              >
-                <option value="">All Continents</option>
-                <option value="Europe">Europe</option>
-                <option value="Asia">Asia</option>
-                <option value="North America">North America</option>
-                <option value="South America">South America</option>
-                <option value="Africa">Africa</option>
-                <option value="Oceania">Oceania</option>
-              </select>
+              <div className={styles.filterGroup}>
+                <label className={styles.filterLabel}>
+                  Filter by Continent
+                </label>
+                <select
+                  value={filters.continent}
+                  onChange={(e) =>
+                    setFilters({ ...filters, continent: e.target.value })
+                  }
+                  className={styles.filterSelect}
+                >
+                  <option value="">All Continents</option>
+                  <option value="Europe">Europe</option>
+                  <option value="Asia">Asia</option>
+                  <option value="North America">North America</option>
+                  <option value="South America">South America</option>
+                  <option value="Africa">Africa</option>
+                  <option value="Oceania">Oceania</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {isLoading ? (
           <div
@@ -157,48 +165,52 @@ const CitySearch = () => {
           <>
             {/* Cities Grid */}
             <div className={styles.citiesGrid}>
-              {cities.map((city) => (
-                <div key={city.id} className={styles.cityCard}>
-                  <img
-                    src={
-                      city.imageUrl ||
-                      "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400"
-                    }
-                    alt={city.name}
-                    className={styles.cityImage}
-                  />
-                  <div className={styles.cityContent}>
-                    <h3 className={styles.cityName}>{city.name}</h3>
-                    <p className={styles.cityCountry}>{city.country}</p>
-                    <p className={styles.cityDescription}>{city.description}</p>
+              {cities.map((city, index) => (
+                <Reveal key={city.id} animation="up" delay={index * 0.05}>
+                  <div className={styles.cityCard}>
+                    <img
+                      src={
+                        city.imageUrl ||
+                        "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400"
+                      }
+                      alt={city.name}
+                      className={styles.cityImage}
+                    />
+                    <div className={styles.cityContent}>
+                      <h3 className={styles.cityName}>{city.name}</h3>
+                      <p className={styles.cityCountry}>{city.country}</p>
+                      <p className={styles.cityDescription}>
+                        {city.description}
+                      </p>
 
-                    <div className={styles.cityMeta}>
-                      <span className={styles.costInfo}>
-                        <DollarSign size={14} />
-                        <span>Cost: {city.averageCost || "N/A"}</span>
-                      </span>
-                      <span className={styles.costInfo}>
-                        <Star size={14} />
-                        <span>{city.popularityRating || "N/A"}</span>
-                      </span>
-                    </div>
+                      <div className={styles.cityMeta}>
+                        <span className={styles.costInfo}>
+                          <DollarSign size={14} />
+                          <span>Cost: {city.averageCost || "N/A"}</span>
+                        </span>
+                        <span className={styles.costInfo}>
+                          <Star size={14} />
+                          <span>{city.popularityRating || "N/A"}</span>
+                        </span>
+                      </div>
 
-                    <div className={styles.cityActions}>
-                      <Link
-                        to={`/cities?city=${city.id}`}
-                        className={styles.viewButton}
-                      >
-                        View Details
-                      </Link>
-                      <button
-                        onClick={() => handleAddToTrip(city)}
-                        className={styles.addButton}
-                      >
-                        Add to Trip
-                      </button>
+                      <div className={styles.cityActions}>
+                        <Link
+                          to={`/cities?city=${city.id}`}
+                          className={styles.viewButton}
+                        >
+                          View Details
+                        </Link>
+                        <button
+                          onClick={() => handleAddToTrip(city)}
+                          className={styles.addButton}
+                        >
+                          Add to Trip
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
 

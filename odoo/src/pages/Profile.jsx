@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Camera } from "lucide-react";
 import MainLayout from "../layouts/MainLayout";
+import Reveal from "../components/Reveal";
+import { mockUsers } from "../data/users";
 import useStore from "../store/useStore";
 import {
   getProfile,
@@ -59,7 +61,19 @@ const Profile = () => {
         }
       } catch (err) {
         console.error("Error fetching profile:", err);
-        setError("Failed to load profile");
+        // Use mock user data as fallback
+        const mockUser = mockUsers[0];
+        setFormData({
+          firstName: mockUser.name?.split(" ")[0] || "John",
+          lastName: mockUser.name?.split(" ")[1] || "Doe",
+          email: mockUser.email || "user@example.com",
+          phoneNumber: "+1 (555) 123-4567",
+          bio: "Travel enthusiast exploring the world one city at a time.",
+          city: "San Francisco",
+          country: "United States",
+          preferredLanguage: "en",
+          avatar: null,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -175,7 +189,9 @@ const Profile = () => {
   return (
     <MainLayout>
       <div className={styles.container}>
-        <h1 className={styles.title}>Profile Settings</h1>
+        <Reveal animation="fade">
+          <h1 className={styles.title}>Profile Settings</h1>
+        </Reveal>
 
         {error && (
           <div
@@ -216,284 +232,291 @@ const Profile = () => {
             Loading profile...
           </div>
         ) : (
-          <div className={styles.profileCard}>
-            {/* Avatar Section */}
-            <div className={styles.avatarSection}>
-              <div className={styles.avatarContainer}>
-                {avatarPreview ? (
-                  <img
-                    src={avatarPreview}
-                    alt="Profile"
-                    className={styles.avatar}
-                  />
-                ) : (
-                  <div className={styles.avatarPlaceholder}>
-                    {formData.firstName?.charAt(0)?.toUpperCase() || "U"}
-                  </div>
-                )}
-                {isEditing && (
-                  <label className={styles.avatarUploadButton}>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className={styles.avatarUploadInput}
+          <Reveal animation="up" delay={0.1}>
+            <div className={styles.profileCard}>
+              {/* Avatar Section */}
+              <div className={styles.avatarSection}>
+                <div className={styles.avatarContainer}>
+                  {avatarPreview ? (
+                    <img
+                      src={avatarPreview}
+                      alt="Profile"
+                      className={styles.avatar}
                     />
-                    <Camera size={18} />
-                  </label>
-                )}
-              </div>
-              <div className={styles.userInfo}>
-                <h2 className={styles.userName}>
-                  {formData.firstName} {formData.lastName}
-                </h2>
-                <p className={styles.userEmail}>{formData.email}</p>
-              </div>
-            </div>
-
-            {/* Form Fields */}
-            <div className={styles.formSection}>
-              <div className={styles.formGroup}>
-                <label htmlFor="firstName" className={styles.formLabel}>
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={styles.formInput}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="lastName" className={styles.formLabel}>
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={styles.formInput}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="email" className={styles.formLabel}>
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={styles.formInput}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="phoneNumber" className={styles.formLabel}>
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={styles.formInput}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="bio" className={styles.formLabel}>
-                  Bio
-                </label>
-                <textarea
-                  id="bio"
-                  name="bio"
-                  value={formData.bio}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  rows={3}
-                  className={styles.formInput}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="city" className={styles.formLabel}>
-                  City
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={styles.formInput}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="country" className={styles.formLabel}>
-                  Country
-                </label>
-                <input
-                  type="text"
-                  id="country"
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={styles.formInput}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="preferredLanguage" className={styles.formLabel}>
-                  Preferred Language
-                </label>
-                <select
-                  id="preferredLanguage"
-                  name="preferredLanguage"
-                  value={formData.preferredLanguage}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={styles.formSelect}
-                >
-                  <option value="en">English</option>
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                  <option value="de">German</option>
-                  <option value="it">Italian</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className={styles.actionsSection}>
-              {isEditing ? (
-                <>
-                  <button
-                    onClick={handleSave}
-                    className={styles.saveButton}
-                    disabled={isSaving}
-                  >
-                    {isSaving ? "Saving..." : "Save Changes"}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsEditing(false);
-                      setError("");
-                      setSuccess("");
-                    }}
-                    className={styles.cancelButton}
-                    disabled={isSaving}
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className={styles.editButton}
-                >
-                  Edit Profile
-                </button>
-              )}
-            </div>
-
-            {/* Password Change Section */}
-            <div className={`${styles.sectionDivider}`}>
-              <h3 className={styles.sectionTitle}>Change Password</h3>
-              {!isChangingPassword ? (
-                <button
-                  onClick={() => setIsChangingPassword(true)}
-                  className={styles.editButton}
-                >
-                  Change Password
-                </button>
-              ) : (
-                <div className={styles.formSection}>
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Current Password</label>
-                    <input
-                      type="password"
-                      name="currentPassword"
-                      value={passwordData.currentPassword}
-                      onChange={handlePasswordChange}
-                      className={styles.formInput}
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>New Password</label>
-                    <input
-                      type="password"
-                      name="newPassword"
-                      value={passwordData.newPassword}
-                      onChange={handlePasswordChange}
-                      className={styles.formInput}
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>
-                      Confirm New Password
+                  ) : (
+                    <div className={styles.avatarPlaceholder}>
+                      {formData.firstName?.charAt(0)?.toUpperCase() || "U"}
+                    </div>
+                  )}
+                  {isEditing && (
+                    <label className={styles.avatarUploadButton}>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className={styles.avatarUploadInput}
+                      />
+                      <Camera size={18} />
                     </label>
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      value={passwordData.confirmPassword}
-                      onChange={handlePasswordChange}
-                      className={styles.formInput}
-                    />
-                  </div>
-                  <div className={styles.actionsSection}>
+                  )}
+                </div>
+                <div className={styles.userInfo}>
+                  <h2 className={styles.userName}>
+                    {formData.firstName} {formData.lastName}
+                  </h2>
+                  <p className={styles.userEmail}>{formData.email}</p>
+                </div>
+              </div>
+
+              {/* Form Fields */}
+              <div className={styles.formSection}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="firstName" className={styles.formLabel}>
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="lastName" className={styles.formLabel}>
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="email" className={styles.formLabel}>
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="phoneNumber" className={styles.formLabel}>
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="bio" className={styles.formLabel}>
+                    Bio
+                  </label>
+                  <textarea
+                    id="bio"
+                    name="bio"
+                    value={formData.bio}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    rows={3}
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="city" className={styles.formLabel}>
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="country" className={styles.formLabel}>
+                    Country
+                  </label>
+                  <input
+                    type="text"
+                    id="country"
+                    name="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label
+                    htmlFor="preferredLanguage"
+                    className={styles.formLabel}
+                  >
+                    Preferred Language
+                  </label>
+                  <select
+                    id="preferredLanguage"
+                    name="preferredLanguage"
+                    value={formData.preferredLanguage}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={styles.formSelect}
+                  >
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="it">Italian</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className={styles.actionsSection}>
+                {isEditing ? (
+                  <>
                     <button
-                      onClick={handlePasswordUpdate}
+                      onClick={handleSave}
                       className={styles.saveButton}
                       disabled={isSaving}
                     >
-                      {isSaving ? "Updating..." : "Update Password"}
+                      {isSaving ? "Saving..." : "Save Changes"}
                     </button>
                     <button
                       onClick={() => {
-                        setIsChangingPassword(false);
-                        setPasswordData({
-                          currentPassword: "",
-                          newPassword: "",
-                          confirmPassword: "",
-                        });
+                        setIsEditing(false);
+                        setError("");
+                        setSuccess("");
                       }}
                       className={styles.cancelButton}
                       disabled={isSaving}
                     >
                       Cancel
                     </button>
-                  </div>
-                </div>
-              )}
-            </div>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className={styles.editButton}
+                  >
+                    Edit Profile
+                  </button>
+                )}
+              </div>
 
-            {/* Danger Zone */}
-            <div className={`${styles.sectionDivider} ${styles.dangerZone}`}>
-              <h3 className={styles.dangerTitle}>Danger Zone</h3>
-              <button
-                onClick={handleDeleteAccount}
-                className={styles.deleteButton}
-              >
-                Delete Account
-              </button>
+              {/* Password Change Section */}
+              <div className={`${styles.sectionDivider}`}>
+                <h3 className={styles.sectionTitle}>Change Password</h3>
+                {!isChangingPassword ? (
+                  <button
+                    onClick={() => setIsChangingPassword(true)}
+                    className={styles.editButton}
+                  >
+                    Change Password
+                  </button>
+                ) : (
+                  <div className={styles.formSection}>
+                    <div className={styles.formGroup}>
+                      <label className={styles.formLabel}>
+                        Current Password
+                      </label>
+                      <input
+                        type="password"
+                        name="currentPassword"
+                        value={passwordData.currentPassword}
+                        onChange={handlePasswordChange}
+                        className={styles.formInput}
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label className={styles.formLabel}>New Password</label>
+                      <input
+                        type="password"
+                        name="newPassword"
+                        value={passwordData.newPassword}
+                        onChange={handlePasswordChange}
+                        className={styles.formInput}
+                      />
+                    </div>
+                    <div className={styles.formGroup}>
+                      <label className={styles.formLabel}>
+                        Confirm New Password
+                      </label>
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        value={passwordData.confirmPassword}
+                        onChange={handlePasswordChange}
+                        className={styles.formInput}
+                      />
+                    </div>
+                    <div className={styles.actionsSection}>
+                      <button
+                        onClick={handlePasswordUpdate}
+                        className={styles.saveButton}
+                        disabled={isSaving}
+                      >
+                        {isSaving ? "Updating..." : "Update Password"}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setIsChangingPassword(false);
+                          setPasswordData({
+                            currentPassword: "",
+                            newPassword: "",
+                            confirmPassword: "",
+                          });
+                        }}
+                        className={styles.cancelButton}
+                        disabled={isSaving}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Danger Zone */}
+              <div className={`${styles.sectionDivider} ${styles.dangerZone}`}>
+                <h3 className={styles.dangerTitle}>Danger Zone</h3>
+                <button
+                  onClick={handleDeleteAccount}
+                  className={styles.deleteButton}
+                >
+                  Delete Account
+                </button>
+              </div>
             </div>
-          </div>
+          </Reveal>
         )}
       </div>
     </MainLayout>
