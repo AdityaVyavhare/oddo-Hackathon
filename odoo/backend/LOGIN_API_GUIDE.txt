@@ -56,7 +56,6 @@
       "nationality": "American",
       "preferredCurrency": "USD",
       "preferredLanguage": "en",
-      "emailVerified": true,
       "isActive": true,
       "isPremium": false,
       "totalTripsCreated": 5,
@@ -88,7 +87,6 @@
 | `data.user.nationality` | `string\|null` | User's nationality |
 | `data.user.preferredCurrency` | `string` | Preferred currency code (USD, EUR, etc.) |
 | `data.user.preferredLanguage` | `string` | Preferred language code (en, es, etc.) |
-| `data.user.emailVerified` | `boolean` | Email verification status |
 | `data.user.isActive` | `boolean` | Account active status |
 | `data.user.isPremium` | `boolean` | Premium membership status |
 | `data.user.totalTripsCreated` | `number` | Number of trips created by user |

@@ -4,7 +4,6 @@ const {
   generateAccessToken,
   generateRefreshToken,
   generateUsername,
-  generateVerificationToken,
   comparePassword,
 } = require("../utils/authUtils");
 const ApiResponse = require("../utils/ApiResponse");
@@ -82,12 +81,6 @@ const register = async (req, res) => {
     // Create user in database
     const userId = await User.create(userData);
 
-    // Generate verification token (for email verification feature)
-    const verificationToken = generateVerificationToken();
-
-    // TODO: Store verification token in database (create email_verification_tokens table)
-    // TODO: Send verification email using nodemailer
-
     // Get created user data
     const newUser = await User.findById(userId);
 
@@ -116,7 +109,6 @@ const register = async (req, res) => {
         nationality: newUser.nationality,
         preferredCurrency: newUser.preferred_currency,
         preferredLanguage: newUser.preferred_language,
-        emailVerified: newUser.email_verified,
         isActive: newUser.is_active,
         createdAt: newUser.created_at,
       },
@@ -125,17 +117,11 @@ const register = async (req, res) => {
       expiresIn: 3600, // 1 hour in seconds
     };
 
-    const meta = {
-      verificationEmailSent: false, // Set to true once email sending is implemented
-      verificationExpiresIn: 86400, // 24 hours in seconds
-    };
-
     return ApiResponse.success(
       res,
       201,
-      "Registration successful. Please verify your email.",
-      responseData,
-      meta
+      "Registration successful",
+      responseData
     );
   } catch (error) {
     console.error("Registration error:", error);
@@ -224,7 +210,6 @@ const login = async (req, res) => {
         nationality: user.nationality,
         preferredCurrency: user.preferred_currency,
         preferredLanguage: user.preferred_language,
-        emailVerified: user.email_verified,
         isActive: user.is_active,
         isPremium: user.is_premium,
         totalTripsCreated: user.total_trips_created,
@@ -274,7 +259,6 @@ const getCurrentUser = async (req, res) => {
       nationality: user.nationality,
       preferredCurrency: user.preferred_currency,
       preferredLanguage: user.preferred_language,
-      emailVerified: user.email_verified,
       isActive: user.is_active,
       isPremium: user.is_premium,
       totalTripsCreated: user.total_trips_created,

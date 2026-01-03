@@ -60,7 +60,7 @@
 ```json
 {
   "success": true,
-  "message": "Registration successful. Please verify your email.",
+  "message": "Registration successful",
   "data": {
     "user": {
       "userId": 1,
@@ -75,17 +75,13 @@
       "nationality": "American",
       "preferredCurrency": "USD",
       "preferredLanguage": "en",
-      "emailVerified": false,
+
       "isActive": true,
       "createdAt": "2026-01-03T10:30:00.000Z"
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiam9obi5kb2VAZ21haWwuY29tIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNzA0MjczMDAwLCJleHAiOjE3MDQyNzY2MDB9.abc123xyz",
     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiam9obi5kb2VAZ21haWwuY29tIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNzA0MjczMDAwLCJleHAiOjE3MDQ4Nzc4MDB9.def456uvw",
     "expiresIn": 3600
-  },
-  "meta": {
-    "verificationEmailSent": false,
-    "verificationExpiresIn": 86400
   }
 }
 ```
@@ -102,15 +98,12 @@
 | `data.user.firstName`         | `string`       | User's first name                     |
 | `data.user.lastName`          | `string`       | User's last name                      |
 | `data.user.profilePictureUrl` | `string\|null` | URL to profile picture or null        |
-| `data.user.emailVerified`     | `boolean`      | Email verification status             |
 | `data.user.isActive`          | `boolean`      | Account active status                 |
 | `data.user.createdAt`         | `string`       | ISO timestamp of account creation     |
 | `data.token`                  | `string`       | JWT access token (expires in 1 hour)  |
 | `data.refreshToken`           | `string`       | JWT refresh token (expires in 7 days) |
 | `data.expiresIn`              | `number`       | Token expiration time in seconds      |
 | `meta.verificationEmailSent`  | `boolean`      | Whether verification email was sent   |
-| `meta.verificationExpiresIn`  | `number`       | Verification link expiry (seconds)    |
-
 ---
 
 ## ❌ Error Responses

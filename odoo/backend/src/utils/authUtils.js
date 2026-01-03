@@ -66,14 +66,6 @@ const verifyToken = (token) => {
 };
 
 /**
- * Generate email verification token
- * @returns {string} Random verification token
- */
-const generateVerificationToken = () => {
-  return crypto.randomBytes(32).toString("hex");
-};
-
-/**
  * Generate random username from email
  * @param {string} email - User email
  * @returns {string} Generated username
@@ -84,22 +76,11 @@ const generateUsername = (email) => {
   return `${emailPrefix}${randomSuffix}`.replace(/[^a-z0-9_]/g, "_");
 };
 
-/**
- * Hash email verification token
- * @param {string} token - Plain verification token
- * @returns {string} Hashed token
- */
-const hashToken = (token) => {
-  return crypto.createHash("sha256").update(token).digest("hex");
-};
-
 module.exports = {
   hashPassword,
   comparePassword,
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
-  generateVerificationToken,
   generateUsername,
-  hashToken,
 };
