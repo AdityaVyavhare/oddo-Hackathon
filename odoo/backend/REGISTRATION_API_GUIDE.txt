@@ -1,0 +1,664 @@
+# 📚 GlobeTrotter Registration API - Frontend Integration Guide
+
+## 📌 Quick Reference
+
+**Base URL:** `http://localhost:5000`  
+**Endpoint:** `POST /api/auth/register`  
+**Content-Type:** `multipart/form-data` (with file) OR `application/json` (without file)
+
+---
+
+## 🎯 Complete Registration Endpoint Documentation
+
+### **Endpoint Details**
+
+| Property           | Value                                       |
+| ------------------ | ------------------------------------------- |
+| **URL**            | `/api/auth/register`                        |
+| **Method**         | `POST`                                      |
+| **Content-Type**   | `multipart/form-data` or `application/json` |
+| **Authentication** | Not required                                |
+| **Rate Limit**     | 5 requests per hour per IP                  |
+
+---
+
+## 📥 Request Parameters
+
+### **Required Fields**
+
+| Field Name        | Data Type | Validation                                                                                                                                                                                              | Example                | Description                           |
+| ----------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------- |
+| `email`           | `string`  | - Valid email format<br>- Max 255 chars<br>- Must be unique                                                                                                                                             | `"john.doe@gmail.com"` | User's email address (used for login) |
+| `password`        | `string`  | - Min 8 characters<br>- Max 128 characters<br>- Must contain:<br>&nbsp;&nbsp;• Uppercase letter<br>&nbsp;&nbsp;• Lowercase letter<br>&nbsp;&nbsp;• Number<br>&nbsp;&nbsp;• Special character (@$!%\*?&) | `"SecurePass123!"`     | User's password                       |
+| `confirmPassword` | `string`  | - Must match `password`                                                                                                                                                                                 | `"SecurePass123!"`     | Password confirmation                 |
+| `firstName`       | `string`  | - Min 2 chars<br>- Max 100 chars<br>- Letters, spaces, hyphens, apostrophes only                                                                                                                        | `"John"`               | User's first name                     |
+| `lastName`        | `string`  | - Min 2 chars<br>- Max 100 chars<br>- Letters, spaces, hyphens, apostrophes only                                                                                                                        | `"Doe"`                | User's last name                      |
+| `acceptedTerms`   | `boolean` | - Must be `true`                                                                                                                                                                                        | `true`                 | Terms & Conditions acceptance         |
+| `acceptedPrivacy` | `boolean` | - Must be `true`                                                                                                                                                                                        | `true`                 | Privacy Policy acceptance             |
+
+### **Optional Fields**
+
+| Field Name          | Data Type | Validation                                                                              | Example                  | Description                                          |
+| ------------------- | --------- | --------------------------------------------------------------------------------------- | ------------------------ | ---------------------------------------------------- |
+| `username`          | `string`  | - Min 3 chars<br>- Max 50 chars<br>- Alphanumeric + underscore only<br>- Must be unique | `"johndoe"`              | Username (auto-generated from email if not provided) |
+| `phoneNumber`       | `string`  | - E.164 format<br>- Must be unique if provided                                          | `"+1234567890"`          | Contact phone number                                 |
+| `dateOfBirth`       | `string`  | - ISO date format (YYYY-MM-DD)<br>- User must be 13+ years old                          | `"1990-01-15"`           | Date of birth                                        |
+| `city`              | `string`  | - Max 150 chars                                                                         | `"New York"`             | City of residence                                    |
+| `country`           | `string`  | - Max 100 chars                                                                         | `"United States"`        | Country of residence                                 |
+| `bio`               | `string`  | - Max 500 chars                                                                         | `"Travel enthusiast..."` | User biography/description                           |
+| `nationality`       | `string`  | - Max 100 chars                                                                         | `"American"`             | User nationality                                     |
+| `preferredCurrency` | `string`  | - Exactly 3 chars<br>- Uppercase                                                        | `"USD"`                  | Preferred currency code                              |
+| `preferredLanguage` | `string`  | - 2-10 chars                                                                            | `"en"`                   | Preferred language code                              |
+| `profilePicture`    | `File`    | - File type: JPEG, PNG, WebP<br>- Max size: 5MB<br>- Min dimensions: 200x200px          | `<File object>`          | Profile picture image                                |
+
+---
+
+## 📤 Response Format
+
+### **Success Response (201 Created)**
+
+```json
+{
+  "success": true,
+  "message": "Registration successful",
+  "data": {
+    "user": {
+      "userId": 1,
+      "email": "john.doe@gmail.com",
+      "username": "johndoe",
+      "firstName": "John",
+      "lastName": "Doe",
+      "profilePictureUrl": "/uploads/profiles/abc123.jpg",
+      "bio": "Travel enthusiast",
+      "phoneNumber": "+1234567890",
+      "dateOfBirth": "1990-01-15",
+      "nationality": "American",
+      "preferredCurrency": "USD",
+      "preferredLanguage": "en",
+
+      "isActive": true,
+      "createdAt": "2026-01-03T10:30:00.000Z"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiam9obi5kb2VAZ21haWwuY29tIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNzA0MjczMDAwLCJleHAiOjE3MDQyNzY2MDB9.abc123xyz",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiam9obi5kb2VAZ21haWwuY29tIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiaWF0IjoxNzA0MjczMDAwLCJleHAiOjE3MDQ4Nzc4MDB9.def456uvw",
+    "expiresIn": 3600
+  }
+}
+```
+
+### **Response Fields Explanation**
+
+| Field                         | Type           | Description                           |
+| ----------------------------- | -------------- | ------------------------------------- |
+| `success`                     | `boolean`      | Always `true` for successful requests |
+| `message`                     | `string`       | Human-readable success message        |
+| `data.user.userId`            | `number`       | Unique user ID (primary key)          |
+| `data.user.email`             | `string`       | User's email address                  |
+| `data.user.username`          | `string`       | User's username                       |
+| `data.user.firstName`         | `string`       | User's first name                     |
+| `data.user.lastName`          | `string`       | User's last name                      |
+| `data.user.profilePictureUrl` | `string\|null` | URL to profile picture or null        |
+| `data.user.isActive`          | `boolean`      | Account active status                 |
+| `data.user.createdAt`         | `string`       | ISO timestamp of account creation     |
+| `data.token`                  | `string`       | JWT access token (expires in 1 hour)  |
+| `data.refreshToken`           | `string`       | JWT refresh token (expires in 7 days) |
+| `data.expiresIn`              | `number`       | Token expiration time in seconds      |
+| `meta.verificationEmailSent`  | `boolean`      | Whether verification email was sent   |
+---
+
+## ❌ Error Responses
+
+### **Validation Error (400 Bad Request)**
+
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": [
+    {
+      "field": "email",
+      "message": "Invalid email format",
+      "value": "invalid-email"
+    },
+    {
+      "field": "password",
+      "message": "Password must contain at least one uppercase letter",
+      "value": "weakpass"
+    }
+  ]
+}
+```
+
+### **Email Already Exists (409 Conflict)**
+
+```json
+{
+  "success": false,
+  "message": "Email already exists"
+}
+```
+
+### **Username Already Exists (409 Conflict)**
+
+```json
+{
+  "success": false,
+  "message": "Username already exists"
+}
+```
+
+### **Server Error (500 Internal Server Error)**
+
+```json
+{
+  "success": false,
+  "message": "Registration failed. Please try again later."
+}
+```
+
+### **File Upload Error (400 Bad Request)**
+
+```json
+{
+  "success": false,
+  "message": "File size too large. Maximum size is 5MB"
+}
+```
+
+---
+
+## 💻 Frontend Implementation Examples
+
+### **Example 1: Using Fetch API (without file upload)**
+
+```javascript
+const registerUser = async (formData) => {
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        username: formData.username, // optional
+        phoneNumber: formData.phoneNumber, // optional
+        dateOfBirth: formData.dateOfBirth, // optional
+        city: formData.city, // optional
+        country: formData.country, // optional
+        bio: formData.bio, // optional
+        nationality: formData.nationality, // optional
+        preferredCurrency: formData.preferredCurrency || "USD",
+        preferredLanguage: formData.preferredLanguage || "en",
+        acceptedTerms: true,
+        acceptedPrivacy: true,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Store the tokens
+      localStorage.setItem("accessToken", data.data.token);
+      localStorage.setItem("refreshToken", data.data.refreshToken);
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+
+      // Redirect to dashboard
+      window.location.href = "/dashboard";
+    } else {
+      // Handle errors
+      console.error("Registration failed:", data.message);
+      if (data.errors) {
+        data.errors.forEach((error) => {
+          console.error(`${error.field}: ${error.message}`);
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+  }
+};
+```
+
+### **Example 2: Using Fetch API (with profile picture upload)**
+
+```javascript
+const registerUserWithImage = async (formData, profilePictureFile) => {
+  try {
+    const formDataObj = new FormData();
+
+    // Append all text fields
+    formDataObj.append("email", formData.email);
+    formDataObj.append("password", formData.password);
+    formDataObj.append("confirmPassword", formData.confirmPassword);
+    formDataObj.append("firstName", formData.firstName);
+    formDataObj.append("lastName", formData.lastName);
+    formDataObj.append("acceptedTerms", true);
+    formDataObj.append("acceptedPrivacy", true);
+
+    // Append optional fields if provided
+    if (formData.username) formDataObj.append("username", formData.username);
+    if (formData.phoneNumber)
+      formDataObj.append("phoneNumber", formData.phoneNumber);
+    if (formData.dateOfBirth)
+      formDataObj.append("dateOfBirth", formData.dateOfBirth);
+    if (formData.city) formDataObj.append("city", formData.city);
+    if (formData.country) formDataObj.append("country", formData.country);
+    if (formData.bio) formDataObj.append("bio", formData.bio);
+    if (formData.nationality)
+      formDataObj.append("nationality", formData.nationality);
+    if (formData.preferredCurrency)
+      formDataObj.append("preferredCurrency", formData.preferredCurrency);
+    if (formData.preferredLanguage)
+      formDataObj.append("preferredLanguage", formData.preferredLanguage);
+
+    // Append file if provided
+    if (profilePictureFile) {
+      formDataObj.append("profilePicture", profilePictureFile);
+    }
+
+    const response = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      body: formDataObj, // Don't set Content-Type header, browser will set it with boundary
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      localStorage.setItem("accessToken", data.data.token);
+      localStorage.setItem("refreshToken", data.data.refreshToken);
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+      window.location.href = "/dashboard";
+    } else {
+      handleErrors(data);
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+  }
+};
+```
+
+### **Example 3: Using Axios**
+
+```javascript
+import axios from "axios";
+
+const registerUser = async (formData, profilePicture = null) => {
+  try {
+    const payload = new FormData();
+
+    // Required fields
+    payload.append("email", formData.email);
+    payload.append("password", formData.password);
+    payload.append("confirmPassword", formData.confirmPassword);
+    payload.append("firstName", formData.firstName);
+    payload.append("lastName", formData.lastName);
+    payload.append("acceptedTerms", true);
+    payload.append("acceptedPrivacy", true);
+
+    // Optional fields
+    Object.keys(formData).forEach((key) => {
+      if (
+        ![
+          "email",
+          "password",
+          "confirmPassword",
+          "firstName",
+          "lastName",
+        ].includes(key)
+      ) {
+        if (formData[key]) {
+          payload.append(key, formData[key]);
+        }
+      }
+    });
+
+    // Profile picture
+    if (profilePicture) {
+      payload.append("profilePicture", profilePicture);
+    }
+
+    const response = await axios.post(
+      "http://localhost:5000/api/auth/register",
+      payload,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.data.success) {
+      // Store tokens
+      localStorage.setItem("accessToken", response.data.data.token);
+      localStorage.setItem("refreshToken", response.data.data.refreshToken);
+      localStorage.setItem("user", JSON.stringify(response.data.data.user));
+
+      return response.data;
+    }
+  } catch (error) {
+    if (error.response) {
+      // Server responded with error
+      console.error("Server error:", error.response.data);
+      return error.response.data;
+    } else {
+      // Network error
+      console.error("Network error:", error.message);
+      throw error;
+    }
+  }
+};
+```
+
+### **Example 4: React Component**
+
+```jsx
+import React, { useState } from "react";
+
+const RegistrationForm = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    username: "",
+    phoneNumber: "",
+    dateOfBirth: "",
+    city: "",
+    country: "",
+    bio: "",
+    acceptedTerms: false,
+    acceptedPrivacy: false,
+  });
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    setProfilePicture(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors([]);
+    setLoading(true);
+
+    try {
+      const payload = new FormData();
+
+      // Append all form fields
+      Object.keys(formData).forEach((key) => {
+        if (formData[key]) {
+          payload.append(key, formData[key]);
+        }
+      });
+
+      // Append file
+      if (profilePicture) {
+        payload.append("profilePicture", profilePicture);
+      }
+
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        body: payload,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Store tokens
+        localStorage.setItem("accessToken", data.data.token);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+        localStorage.setItem("user", JSON.stringify(data.data.user));
+
+        // Redirect to dashboard
+        window.location.href = "/dashboard";
+      } else {
+        setErrors(data.errors || [{ message: data.message }]);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setErrors([{ message: "Network error. Please try again." }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {errors.length > 0 && (
+        <div className="error-messages">
+          {errors.map((error, index) => (
+            <p key={index}>
+              {error.field ? `${error.field}: ${error.message}` : error.message}
+            </p>
+          ))}
+        </div>
+      )}
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="password"
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="text"
+        name="firstName"
+        placeholder="First Name"
+        value={formData.firstName}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="text"
+        name="lastName"
+        placeholder="Last Name"
+        value={formData.lastName}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="text"
+        name="username"
+        placeholder="Username (optional)"
+        value={formData.username}
+        onChange={handleChange}
+      />
+
+      <input
+        type="tel"
+        name="phoneNumber"
+        placeholder="Phone Number (optional)"
+        value={formData.phoneNumber}
+        onChange={handleChange}
+      />
+
+      <input
+        type="date"
+        name="dateOfBirth"
+        placeholder="Date of Birth (optional)"
+        value={formData.dateOfBirth}
+        onChange={handleChange}
+      />
+
+      <input
+        type="file"
+        name="profilePicture"
+        accept="image/jpeg,image/png,image/webp"
+        onChange={handleFileChange}
+      />
+
+      <label>
+        <input
+          type="checkbox"
+          name="acceptedTerms"
+          checked={formData.acceptedTerms}
+          onChange={handleChange}
+          required
+        />
+        I accept the Terms & Conditions
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          name="acceptedPrivacy"
+          checked={formData.acceptedPrivacy}
+          onChange={handleChange}
+          required
+        />
+        I accept the Privacy Policy
+      </label>
+
+      <button type="submit" disabled={loading}>
+        {loading ? "Registering..." : "Register"}
+      </button>
+    </form>
+  );
+};
+
+export default RegistrationForm;
+```
+
+---
+
+## 🔐 Using the Authentication Token
+
+After successful registration, use the returned JWT token for authenticated requests:
+
+```javascript
+// Store token after registration
+localStorage.setItem("accessToken", data.data.token);
+
+// Use token in subsequent requests
+const response = await fetch("http://localhost:5000/api/some-protected-route", {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    "Content-Type": "application/json",
+  },
+});
+```
+
+---
+
+## ⚠️ Common Validation Errors
+
+| Error Field       | Message                                                          | Reason                                    |
+| ----------------- | ---------------------------------------------------------------- | ----------------------------------------- |
+| `email`           | "Invalid email format"                                           | Email doesn't match email pattern         |
+| `email`           | "Email already exists"                                           | Email is already registered               |
+| `password`        | "Password must be between 8 and 128 characters"                  | Password too short or too long            |
+| `password`        | "Password must contain at least one uppercase letter"            | Missing uppercase letter                  |
+| `password`        | "Password must contain at least one lowercase letter"            | Missing lowercase letter                  |
+| `password`        | "Password must contain at least one number"                      | Missing number                            |
+| `password`        | "Password must contain at least one special character"           | Missing special character (@$!%\*?&)      |
+| `confirmPassword` | "Passwords do not match"                                         | Password and confirm password don't match |
+| `firstName`       | "First name must be between 2 and 100 characters"                | Name too short or too long                |
+| `username`        | "Username already exists"                                        | Username is already taken                 |
+| `phoneNumber`     | "Invalid phone number format"                                    | Phone number doesn't match E.164 format   |
+| `dateOfBirth`     | "You must be at least 13 years old to register"                  | User is under 13                          |
+| `acceptedTerms`   | "You must accept the terms and conditions"                       | Terms not accepted                        |
+| `profilePicture`  | "File size too large. Maximum size is 5MB"                       | Image file exceeds 5MB                    |
+| `profilePicture`  | "Invalid file type. Only JPEG, PNG, and WebP images are allowed" | Wrong file type                           |
+
+---
+
+## 📋 Testing Checklist
+
+- [ ] Test with minimum required fields only
+- [ ] Test with all optional fields
+- [ ] Test with profile picture upload
+- [ ] Test with duplicate email
+- [ ] Test with duplicate username
+- [ ] Test with weak password
+- [ ] Test with mismatched passwords
+- [ ] Test with invalid email format
+- [ ] Test with invalid phone number
+- [ ] Test with user under 13 years old
+- [ ] Test without accepting terms
+- [ ] Test with file size > 5MB
+- [ ] Test with non-image file
+- [ ] Test username auto-generation (don't send username field)
+- [ ] Verify JWT token is stored correctly
+- [ ] Verify user data is returned correctly
+
+---
+
+## 🚀 Quick Test Commands
+
+### Using cURL (No file upload)
+
+```bash
+curl -X POST http://localhost:5000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "SecurePass123!",
+    "confirmPassword": "SecurePass123!",
+    "firstName": "John",
+    "lastName": "Doe",
+    "acceptedTerms": true,
+    "acceptedPrivacy": true
+  }'
+```
+
+### Using cURL (With file upload)
+
+```bash
+curl -X POST http://localhost:5000/api/auth/register \
+  -F "email=test@example.com" \
+  -F "password=SecurePass123!" \
+  -F "confirmPassword=SecurePass123!" \
+  -F "firstName=John" \
+  -F "lastName=Doe" \
+  -F "acceptedTerms=true" \
+  -F "acceptedPrivacy=true" \
+  -F "profilePicture=@/path/to/image.jpg"
+```
+
+---
+
+## 📞 Support
+
+For any issues or questions, contact the backend team or refer to the main API documentation.
+
+**API Version:** 1.0.0  
+**Last Updated:** January 3, 2026
