@@ -67,9 +67,18 @@ class Expense {
 
   static async update(expenseId, updateData) {
     const allowedFields = [
-      "expense_category_id", "expense_name", "description", "amount",
-      "currency", "amount_in_base_currency", "expense_date", "payment_method",
-      "is_shared_expense", "split_between_count", "receipt_url", "notes"
+      "expense_category_id",
+      "expense_name",
+      "description",
+      "amount",
+      "currency",
+      "amount_in_base_currency",
+      "expense_date",
+      "payment_method",
+      "is_shared_expense",
+      "split_between_count",
+      "receipt_url",
+      "notes",
     ];
 
     const updates = [];
@@ -87,7 +96,9 @@ class Expense {
     }
 
     params.push(expenseId);
-    const query = `UPDATE trip_expenses SET ${updates.join(", ")} WHERE expense_id = ?`;
+    const query = `UPDATE trip_expenses SET ${updates.join(
+      ", "
+    )} WHERE expense_id = ?`;
     await executeQuery(query, params);
   }
 

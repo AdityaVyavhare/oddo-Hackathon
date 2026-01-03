@@ -5,9 +5,30 @@ const ApiResponse = require("../utils/ApiResponse");
 const createTrip = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { tripName, description, startDate, endDate, totalBudget, currency, coverImageUrl, isPublic, tags } = req.body;
+    const {
+      tripName,
+      description,
+      startDate,
+      endDate,
+      totalBudget,
+      currency,
+      coverImageUrl,
+      isPublic,
+      tags,
+    } = req.body;
 
-    const tripData = { userId, tripName, description, startDate, endDate, totalBudget, currency, coverImageUrl, isPublic, tags };
+    const tripData = {
+      userId,
+      tripName,
+      description,
+      startDate,
+      endDate,
+      totalBudget,
+      currency,
+      coverImageUrl,
+      isPublic,
+      tags,
+    };
     const tripId = await Trip.create(tripData);
 
     const trip = await Trip.findById(tripId);
@@ -27,7 +48,10 @@ const getUserTrips = async (req, res) => {
     if (status) filters.status = status;
 
     const trips = await Trip.getUserTrips(userId, filters);
-    return ApiResponse.success(res, 200, "Trips retrieved successfully", { trips, count: trips.length });
+    return ApiResponse.success(res, 200, "Trips retrieved successfully", {
+      trips,
+      count: trips.length,
+    });
   } catch (error) {
     console.error("Get user trips error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve trips");
@@ -92,7 +116,12 @@ const getPublicTrips = async (req, res) => {
     if (limit) pagination.limit = parseInt(limit);
 
     const result = await Trip.getPublicTrips(filters, pagination);
-    return ApiResponse.success(res, 200, "Public trips retrieved successfully", result);
+    return ApiResponse.success(
+      res,
+      200,
+      "Public trips retrieved successfully",
+      result
+    );
   } catch (error) {
     console.error("Get public trips error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve trips");
@@ -109,7 +138,12 @@ const getTripByShareToken = async (req, res) => {
     }
 
     await Trip.incrementViewCount(trip.trip_id);
-    return ApiResponse.success(res, 200, "Shared trip retrieved successfully", trip);
+    return ApiResponse.success(
+      res,
+      200,
+      "Shared trip retrieved successfully",
+      trip
+    );
   } catch (error) {
     console.error("Get shared trip error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve trip");

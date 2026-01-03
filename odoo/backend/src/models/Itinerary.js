@@ -75,9 +75,22 @@ class ItineraryItem {
 
   static async update(itemId, updateData) {
     const allowedFields = [
-      "activity_id", "day_number", "item_date", "start_time", "end_time",
-      "item_type", "title", "description", "estimated_cost", "actual_cost",
-      "location", "booking_status", "booking_reference", "priority", "notes", "display_order"
+      "activity_id",
+      "day_number",
+      "item_date",
+      "start_time",
+      "end_time",
+      "item_type",
+      "title",
+      "description",
+      "estimated_cost",
+      "actual_cost",
+      "location",
+      "booking_status",
+      "booking_reference",
+      "priority",
+      "notes",
+      "display_order",
     ];
 
     const updates = [];
@@ -95,12 +108,15 @@ class ItineraryItem {
     }
 
     params.push(itemId);
-    const query = `UPDATE itinerary_items SET ${updates.join(", ")} WHERE item_id = ?`;
+    const query = `UPDATE itinerary_items SET ${updates.join(
+      ", "
+    )} WHERE item_id = ?`;
     await executeQuery(query, params);
   }
 
   static async markCompleted(itemId, isCompleted = true) {
-    const query = "UPDATE itinerary_items SET is_completed = ? WHERE item_id = ?";
+    const query =
+      "UPDATE itinerary_items SET is_completed = ? WHERE item_id = ?";
     await executeQuery(query, [isCompleted, itemId]);
   }
 
@@ -111,7 +127,8 @@ class ItineraryItem {
 
   static async reorderItems(stopId, itemOrders) {
     for (const { itemId, displayOrder } of itemOrders) {
-      const query = "UPDATE itinerary_items SET display_order = ? WHERE item_id = ? AND stop_id = ?";
+      const query =
+        "UPDATE itinerary_items SET display_order = ? WHERE item_id = ? AND stop_id = ?";
       await executeQuery(query, [displayOrder, itemId, stopId]);
     }
   }

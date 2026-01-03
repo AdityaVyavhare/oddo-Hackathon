@@ -1,10 +1,26 @@
-const { Activity, ActivityCategory, ActivityReview } = require("../models/Activity");
+const {
+  Activity,
+  ActivityCategory,
+  ActivityReview,
+} = require("../models/Activity");
 const ApiResponse = require("../utils/ApiResponse");
 
 // Activity Controllers
 const getAllActivities = async (req, res) => {
   try {
-    const { page, limit, cityId, categoryId, search, minRating, maxCost, difficultyLevel, isFeatured, sortBy, sortOrder } = req.query;
+    const {
+      page,
+      limit,
+      cityId,
+      categoryId,
+      search,
+      minRating,
+      maxCost,
+      difficultyLevel,
+      isFeatured,
+      sortBy,
+      sortOrder,
+    } = req.query;
 
     const filters = {};
     if (cityId) filters.cityId = parseInt(cityId);
@@ -22,7 +38,12 @@ const getAllActivities = async (req, res) => {
     if (limit) pagination.limit = parseInt(limit);
 
     const result = await Activity.getAll(filters, pagination);
-    return ApiResponse.success(res, 200, "Activities retrieved successfully", result);
+    return ApiResponse.success(
+      res,
+      200,
+      "Activities retrieved successfully",
+      result
+    );
   } catch (error) {
     console.error("Get activities error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve activities");
@@ -39,7 +60,12 @@ const getActivityById = async (req, res) => {
     }
 
     await Activity.incrementPopularity(activityId);
-    return ApiResponse.success(res, 200, "Activity retrieved successfully", activity);
+    return ApiResponse.success(
+      res,
+      200,
+      "Activity retrieved successfully",
+      activity
+    );
   } catch (error) {
     console.error("Get activity error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve activity");
@@ -53,7 +79,10 @@ const getActivitiesByCity = async (req, res) => {
     const limitNum = limit ? parseInt(limit) : 20;
 
     const activities = await Activity.getByCity(cityId, limitNum);
-    return ApiResponse.success(res, 200, "Activities retrieved successfully", { activities, count: activities.length });
+    return ApiResponse.success(res, 200, "Activities retrieved successfully", {
+      activities,
+      count: activities.length,
+    });
   } catch (error) {
     console.error("Get activities by city error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve activities");
@@ -64,7 +93,10 @@ const getActivitiesByCity = async (req, res) => {
 const getAllCategories = async (req, res) => {
   try {
     const categories = await ActivityCategory.getAll();
-    return ApiResponse.success(res, 200, "Categories retrieved successfully", { categories, count: categories.length });
+    return ApiResponse.success(res, 200, "Categories retrieved successfully", {
+      categories,
+      count: categories.length,
+    });
   } catch (error) {
     console.error("Get categories error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve categories");
@@ -82,7 +114,12 @@ const getActivityReviews = async (req, res) => {
     if (limit) pagination.limit = parseInt(limit);
 
     const result = await ActivityReview.getByActivity(activityId, pagination);
-    return ApiResponse.success(res, 200, "Reviews retrieved successfully", result);
+    return ApiResponse.success(
+      res,
+      200,
+      "Reviews retrieved successfully",
+      result
+    );
   } catch (error) {
     console.error("Get reviews error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve reviews");
@@ -95,15 +132,31 @@ const createActivityReview = async (req, res) => {
     const userId = req.user.userId;
     const { rating, reviewTitle, reviewText, photos, visitDate } = req.body;
 
-    const hasReviewed = await ActivityReview.hasUserReviewed(activityId, userId);
+    const hasReviewed = await ActivityReview.hasUserReviewed(
+      activityId,
+      userId
+    );
     if (hasReviewed) {
-      return ApiResponse.conflict(res, "You have already reviewed this activity");
+      return ApiResponse.conflict(
+        res,
+        "You have already reviewed this activity"
+      );
     }
 
-    const reviewData = { activityId, userId, rating, reviewTitle, reviewText, photos, visitDate };
+    const reviewData = {
+      activityId,
+      userId,
+      rating,
+      reviewTitle,
+      reviewText,
+      photos,
+      visitDate,
+    };
     const reviewId = await ActivityReview.create(reviewData);
 
-    return ApiResponse.success(res, 201, "Review created successfully", { reviewId });
+    return ApiResponse.success(res, 201, "Review created successfully", {
+      reviewId,
+    });
   } catch (error) {
     console.error("Create review error:", error);
     return ApiResponse.serverError(res, "Failed to create review");
@@ -116,7 +169,12 @@ const updateActivityReview = async (req, res) => {
     const userId = req.user.userId;
     const { rating, reviewTitle, reviewText, photos } = req.body;
 
-    await ActivityReview.update(reviewId, userId, { rating, reviewTitle, reviewText, photos });
+    await ActivityReview.update(reviewId, userId, {
+      rating,
+      reviewTitle,
+      reviewText,
+      photos,
+    });
     return ApiResponse.success(res, 200, "Review updated successfully");
   } catch (error) {
     console.error("Update review error:", error);

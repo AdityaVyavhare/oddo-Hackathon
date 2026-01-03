@@ -65,10 +65,18 @@ class TripStop {
 
   static async update(stopId, updateData) {
     const allowedFields = [
-      "city_id", "stop_order", "arrival_date", "departure_date",
-      "accommodation_name", "accommodation_address", "accommodation_cost",
-      "accommodation_booking_ref", "transportation_mode", "transportation_cost",
-      "transportation_details", "notes"
+      "city_id",
+      "stop_order",
+      "arrival_date",
+      "departure_date",
+      "accommodation_name",
+      "accommodation_address",
+      "accommodation_cost",
+      "accommodation_booking_ref",
+      "transportation_mode",
+      "transportation_cost",
+      "transportation_details",
+      "notes",
     ];
 
     const updates = [];
@@ -86,7 +94,9 @@ class TripStop {
     }
 
     params.push(stopId);
-    const query = `UPDATE trip_stops SET ${updates.join(", ")} WHERE stop_id = ?`;
+    const query = `UPDATE trip_stops SET ${updates.join(
+      ", "
+    )} WHERE stop_id = ?`;
     await executeQuery(query, params);
   }
 
@@ -97,7 +107,8 @@ class TripStop {
 
   static async reorderStops(tripId, stopOrders) {
     for (const { stopId, stopOrder } of stopOrders) {
-      const query = "UPDATE trip_stops SET stop_order = ? WHERE stop_id = ? AND trip_id = ?";
+      const query =
+        "UPDATE trip_stops SET stop_order = ? WHERE stop_id = ? AND trip_id = ?";
       await executeQuery(query, [stopOrder, stopId, tripId]);
     }
   }

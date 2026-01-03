@@ -69,7 +69,11 @@ router.get("/itinerary/:itemId", getItineraryItemById);
 router.put("/itinerary/:itemId", authMiddleware, updateItineraryItem);
 router.patch("/itinerary/:itemId/complete", authMiddleware, markItemCompleted);
 router.delete("/itinerary/:itemId", authMiddleware, deleteItineraryItem);
-router.patch("/stops/:stopId/itinerary/reorder", authMiddleware, reorderItineraryItems);
+router.patch(
+  "/stops/:stopId/itinerary/reorder",
+  authMiddleware,
+  reorderItineraryItems
+);
 
 // Expense Routes
 router.get("/:tripId/expenses", getTripExpenses);

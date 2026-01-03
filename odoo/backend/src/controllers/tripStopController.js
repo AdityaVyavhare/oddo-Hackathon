@@ -9,7 +9,12 @@ const createTripStop = async (req, res) => {
     const stopId = await TripStop.create(stopData);
     const stop = await TripStop.findById(stopId);
 
-    return ApiResponse.success(res, 201, "Trip stop created successfully", stop);
+    return ApiResponse.success(
+      res,
+      201,
+      "Trip stop created successfully",
+      stop
+    );
   } catch (error) {
     console.error("Create trip stop error:", error);
     return ApiResponse.serverError(res, "Failed to create trip stop");
@@ -21,7 +26,10 @@ const getTripStops = async (req, res) => {
     const { tripId } = req.params;
     const stops = await TripStop.getTripStops(tripId);
 
-    return ApiResponse.success(res, 200, "Trip stops retrieved successfully", { stops, count: stops.length });
+    return ApiResponse.success(res, 200, "Trip stops retrieved successfully", {
+      stops,
+      count: stops.length,
+    });
   } catch (error) {
     console.error("Get trip stops error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve trip stops");
@@ -37,7 +45,12 @@ const getTripStopById = async (req, res) => {
       return ApiResponse.notFound(res, "Trip stop not found");
     }
 
-    return ApiResponse.success(res, 200, "Trip stop retrieved successfully", stop);
+    return ApiResponse.success(
+      res,
+      200,
+      "Trip stop retrieved successfully",
+      stop
+    );
   } catch (error) {
     console.error("Get trip stop error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve trip stop");
@@ -52,7 +65,12 @@ const updateTripStop = async (req, res) => {
     await TripStop.update(stopId, updateData);
     const stop = await TripStop.findById(stopId);
 
-    return ApiResponse.success(res, 200, "Trip stop updated successfully", stop);
+    return ApiResponse.success(
+      res,
+      200,
+      "Trip stop updated successfully",
+      stop
+    );
   } catch (error) {
     console.error("Update trip stop error:", error);
     return ApiResponse.serverError(res, "Failed to update trip stop");

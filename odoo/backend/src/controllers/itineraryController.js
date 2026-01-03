@@ -9,7 +9,12 @@ const createItineraryItem = async (req, res) => {
     const itemId = await ItineraryItem.create(itemData);
     const item = await ItineraryItem.findById(itemId);
 
-    return ApiResponse.success(res, 201, "Itinerary item created successfully", item);
+    return ApiResponse.success(
+      res,
+      201,
+      "Itinerary item created successfully",
+      item
+    );
   } catch (error) {
     console.error("Create itinerary item error:", error);
     return ApiResponse.serverError(res, "Failed to create itinerary item");
@@ -21,7 +26,12 @@ const getStopItinerary = async (req, res) => {
     const { stopId } = req.params;
     const items = await ItineraryItem.getByStop(stopId);
 
-    return ApiResponse.success(res, 200, "Itinerary items retrieved successfully", { items, count: items.length });
+    return ApiResponse.success(
+      res,
+      200,
+      "Itinerary items retrieved successfully",
+      { items, count: items.length }
+    );
   } catch (error) {
     console.error("Get stop itinerary error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve itinerary");
@@ -33,7 +43,12 @@ const getTripItinerary = async (req, res) => {
     const { tripId } = req.params;
     const items = await ItineraryItem.getByTrip(tripId);
 
-    return ApiResponse.success(res, 200, "Trip itinerary retrieved successfully", { items, count: items.length });
+    return ApiResponse.success(
+      res,
+      200,
+      "Trip itinerary retrieved successfully",
+      { items, count: items.length }
+    );
   } catch (error) {
     console.error("Get trip itinerary error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve itinerary");
@@ -49,7 +64,12 @@ const getItineraryItemById = async (req, res) => {
       return ApiResponse.notFound(res, "Itinerary item not found");
     }
 
-    return ApiResponse.success(res, 200, "Itinerary item retrieved successfully", item);
+    return ApiResponse.success(
+      res,
+      200,
+      "Itinerary item retrieved successfully",
+      item
+    );
   } catch (error) {
     console.error("Get itinerary item error:", error);
     return ApiResponse.serverError(res, "Failed to retrieve item");
@@ -64,7 +84,12 @@ const updateItineraryItem = async (req, res) => {
     await ItineraryItem.update(itemId, updateData);
     const item = await ItineraryItem.findById(itemId);
 
-    return ApiResponse.success(res, 200, "Itinerary item updated successfully", item);
+    return ApiResponse.success(
+      res,
+      200,
+      "Itinerary item updated successfully",
+      item
+    );
   } catch (error) {
     console.error("Update itinerary item error:", error);
     return ApiResponse.serverError(res, "Failed to update item");
@@ -102,7 +127,11 @@ const reorderItineraryItems = async (req, res) => {
     const { itemOrders } = req.body;
 
     await ItineraryItem.reorderItems(stopId, itemOrders);
-    return ApiResponse.success(res, 200, "Itinerary items reordered successfully");
+    return ApiResponse.success(
+      res,
+      200,
+      "Itinerary items reordered successfully"
+    );
   } catch (error) {
     console.error("Reorder items error:", error);
     return ApiResponse.serverError(res, "Failed to reorder items");

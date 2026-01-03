@@ -74,17 +74,34 @@ class Trip {
 
     const results = await executeQuery(query, params);
 
-    const countQuery = "SELECT COUNT(*) as total FROM trips WHERE is_public = TRUE";
+    const countQuery =
+      "SELECT COUNT(*) as total FROM trips WHERE is_public = TRUE";
     const countResult = await executeQuery(countQuery);
 
     return {
       trips: results,
-      pagination: { page, limit, total: countResult[0].total, totalPages: Math.ceil(countResult[0].total / limit) },
+      pagination: {
+        page,
+        limit,
+        total: countResult[0].total,
+        totalPages: Math.ceil(countResult[0].total / limit),
+      },
     };
   }
 
   static async update(tripId, userId, updateData) {
-    const allowedFields = ["trip_name", "description", "start_date", "end_date", "total_budget", "currency", "cover_image_url", "is_public", "status", "tags"];
+    const allowedFields = [
+      "trip_name",
+      "description",
+      "start_date",
+      "end_date",
+      "total_budget",
+      "currency",
+      "cover_image_url",
+      "is_public",
+      "status",
+      "tags",
+    ];
     const updates = [];
     const params = [];
 
@@ -100,7 +117,9 @@ class Trip {
     }
 
     params.push(tripId, userId);
-    const query = `UPDATE trips SET ${updates.join(", ")} WHERE trip_id = ? AND user_id = ?`;
+    const query = `UPDATE trips SET ${updates.join(
+      ", "
+    )} WHERE trip_id = ? AND user_id = ?`;
     await executeQuery(query, params);
   }
 
@@ -110,7 +129,8 @@ class Trip {
   }
 
   static async incrementViewCount(tripId) {
-    const query = "UPDATE trips SET view_count = view_count + 1 WHERE trip_id = ?";
+    const query =
+      "UPDATE trips SET view_count = view_count + 1 WHERE trip_id = ?";
     await executeQuery(query, [tripId]);
   }
 
@@ -131,7 +151,8 @@ class Trip {
   }
 
   static async hasUserLiked(tripId, userId) {
-    const query = "SELECT COUNT(*) as count FROM trip_likes WHERE trip_id = ? AND user_id = ?";
+    const query =
+      "SELECT COUNT(*) as count FROM trip_likes WHERE trip_id = ? AND user_id = ?";
     const results = await executeQuery(query, [tripId, userId]);
     return results[0].count > 0;
   }
@@ -139,7 +160,7 @@ class Trip {
   static async clone(originalTripId, newUserId) {
     const cloneQuery = "CALL sp_clone_trip(?, ?, @new_trip_id)";
     await executeQuery(cloneQuery, [originalTripId, newUserId]);
-    
+
     const getIdQuery = "SELECT @new_trip_id as new_trip_id";
     const result = await executeQuery(getIdQuery);
     return result[0].new_trip_id;
