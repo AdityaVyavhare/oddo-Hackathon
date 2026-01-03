@@ -3,7 +3,7 @@ const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 const {
   handleValidationErrors,
-} = require("../middleware/validationMiddleware");
+} = require("../middleware/validators/authValidator");
 const {
   updateProfileValidation,
   updatePreferencesValidation,
@@ -11,7 +11,7 @@ const {
   deleteAccountValidation,
   userIdParamValidation,
 } = require("../middleware/validators/userValidator");
-const { profilePictureUpload } = require("../middleware/uploadMiddleware");
+const { uploadProfilePicture } = require("../middleware/uploadMiddleware");
 const {
   getProfile,
   updateProfile,
@@ -29,7 +29,7 @@ router.get("/profile", authMiddleware, getProfile);
 router.put(
   "/profile",
   authMiddleware,
-  profilePictureUpload,
+  uploadProfilePicture,
   updateProfileValidation,
   handleValidationErrors,
   updateProfile
