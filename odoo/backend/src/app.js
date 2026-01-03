@@ -57,6 +57,13 @@ app.use("/api/cities", require("./routes/cities"));
 app.use("/api/activities", require("./routes/activities"));
 app.use("/api/trips", require("./routes/trips"));
 app.use("/api/expense-categories", require("./routes/expenseCategories"));
+app.use("/api/wishlist", require("./routes/wishlist"));
+app.use("/api/social", require("./routes/social"));
+app.use("/api/notifications", require("./routes/notifications"));
+app.use("/api/search", require("./routes/search"));
+app.use("/api/collaboration", require("./routes/collaboration"));
+app.use("/api/documents", require("./routes/documents"));
+app.use("/api/admin", require("./routes/admin"));
 
 // Root endpoint
 app.get("/", (req, res) => {
@@ -72,6 +79,13 @@ app.get("/", (req, res) => {
       activities: "/api/activities",
       trips: "/api/trips",
       expenseCategories: "/api/expense-categories",
+      wishlist: "/api/wishlist",
+      social: "/api/social",
+      notifications: "/api/notifications",
+      search: "/api/search",
+      collaboration: "/api/collaboration",
+      documents: "/api/documents",
+      admin: "/api/admin",
       health: "/health",
     },
   });
