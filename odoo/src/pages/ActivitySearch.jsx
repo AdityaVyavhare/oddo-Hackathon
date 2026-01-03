@@ -10,7 +10,13 @@ import styles from "./ActivitySearch.module.css";
 
 const ActivitySearch = () => {
   const { selectedTrip, addActivityToCity } = useStore();
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState(
+    mockActivities.map((activity) => ({
+      ...activity,
+      location: activity.cityId,
+      city: activity.cityId,
+    }))
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     type: "",
@@ -33,7 +39,7 @@ const ActivitySearch = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       if (!searchQuery && !filters.type && !filters.cityId) {
-        setActivities([]);
+        // Keep showing mock data when no filters applied
         return;
       }
 

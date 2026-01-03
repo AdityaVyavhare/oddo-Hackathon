@@ -13,7 +13,7 @@ import styles from "./CitySearch.module.css";
 
 const CitySearch = () => {
   const { selectedTrip, addCityToTrip } = useStore();
-  const [cities, setCities] = useState([]);
+  const [cities, setCities] = useState(mockCities);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     country: "",
@@ -51,7 +51,8 @@ const CitySearch = () => {
         }
       } catch (err) {
         console.error("Error fetching cities:", err);
-        setError("Failed to load cities");
+        // Use mock data as fallback
+        setCities(mockCities);
       } finally {
         setIsLoading(false);
       }

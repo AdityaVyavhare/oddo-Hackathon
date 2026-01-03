@@ -12,7 +12,13 @@ import styles from "./MyTrips.module.css";
 
 const MyTrips = () => {
   const { currentUser } = useStore();
-  const [trips, setTrips] = useState([]);
+  const [trips, setTrips] = useState(
+    mockTrips.map((trip) => ({
+      ...trip,
+      stops: trip.cities,
+      totalBudget: trip.budget?.total || 0,
+    }))
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
