@@ -1,0 +1,219 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #111827;
+}
+
+.newTripButton {
+  background-color: #2563EB;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.newTripButton:hover {
+  background-color: #1D4ED8;
+}
+
+.tripsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.tripCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #F3F4F6;
+  animation: scaleIn 0.4s ease-out;
+}
+
+.tripCard:nth-child(1) { animation-delay: 0.1s; }
+.tripCard:nth-child(2) { animation-delay: 0.2s; }
+.tripCard:nth-child(3) { animation-delay: 0.3s; }
+.tripCard:nth-child(4) { animation-delay: 0.4s; }
+.tripCard:nth-child(5) { animation-delay: 0.5s; }
+
+.tripCard:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px) scale(1.02);
+  border-color: #E0E7FF;
+}
+
+.tripImage {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tripCard:hover .tripImage {
+  transform: scale(1.1);
+}
+
+.tripContent {
+  padding: 1rem;
+}
+
+.tripName {
+  font-weight: bold;
+  font-size: 1.125rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.tripName:hover {
+  color: #2563EB;
+}
+
+.tripDescription {
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-bottom: 0.5rem;
+}
+
+.tripDate {
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-bottom: 0.5rem;
+}
+
+.tripMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  margin-bottom: 1rem;
+}
+
+.tripActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.actionButtonGray {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.actionButtonGray:hover {
+  background-color: #E5E7EB;
+}
+
+.actionButtonPrimary {
+  background-color: #2563EB;
+  color: white;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.actionButtonPrimary:hover {
+  background-color: #1D4ED8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+.actionButtonPrimary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.actionButtonDanger {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  padding: 0.5rem 1rem;
+}
+
+.actionButtonDanger:hover {
+  background-color: #FECACA;
+  transform: translateY(-1px);
+}
+
+.actionButtonDanger:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.emptyState {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  text-align: center;
+}
+
+.emptyText {
+  color: #6B7280;
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+}
+
+.emptyLink {
+  color: #2563EB;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  display: inline-block;
+  background-color: #2563EB;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.emptyLink:hover {
+  background-color: #1D4ED8;
+}
+
+@media (max-width: 768px) {
+  .tripsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+

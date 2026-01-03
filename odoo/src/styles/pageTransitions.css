@@ -1,0 +1,13 @@
+.page-transition {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.page-enter {
+  animation: slideInUp 0.4s ease-out;
+}
+
+.page-exit {
+  animation: fadeOut 0.2s ease-out;
+}
+
+

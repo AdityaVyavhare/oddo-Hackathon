@@ -1,35 +1,133 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import PageTransition from './components/PageTransition';
+import ProtectedRoute from './components/ProtectedRoute';
+import AuthLayout from './layouts/AuthLayout';
+import MainLayout from './layouts/MainLayout';
+
+// Auth Pages
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+
+// Main Pages
+import Dashboard from './pages/Dashboard';
+import CreateTrip from './pages/CreateTrip';
+import MyTrips from './pages/MyTrips';
+import ItineraryBuilder from './pages/ItineraryBuilder';
+import ItineraryView from './pages/ItineraryView';
+import CitySearch from './pages/CitySearch';
+import ActivitySearch from './pages/ActivitySearch';
+import Budget from './pages/Budget';
+import Calendar from './pages/Calendar';
+import Profile from './pages/Profile';
+import SharedItinerary from './pages/SharedItinerary';
+import Admin from './pages/Admin';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <PageTransition>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/shared/:tripId" element={<SharedItinerary />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-trip"
+          element={
+            <ProtectedRoute>
+              <CreateTrip />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-trips"
+          element={
+            <ProtectedRoute>
+              <MyTrips />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trip/:tripId/itinerary"
+          element={
+            <ProtectedRoute>
+              <ItineraryBuilder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trip/:tripId/view"
+          element={
+            <ProtectedRoute>
+              <ItineraryView />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trip/:tripId/budget"
+          element={
+            <ProtectedRoute>
+              <Budget />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trip/:tripId/calendar"
+          element={
+            <ProtectedRoute>
+              <Calendar />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cities"
+          element={
+            <ProtectedRoute>
+              <CitySearch />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/activities"
+          element={
+            <ProtectedRoute>
+              <ActivitySearch />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+
+          {/* Default redirect */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </PageTransition>
+    </Router>
+  );
 }
 
-export default App
+export default App;

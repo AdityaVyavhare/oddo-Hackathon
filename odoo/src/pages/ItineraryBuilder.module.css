@@ -1,0 +1,342 @@
+.container {
+  max-width: 56rem;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  animation: slideInDown 0.4s ease-out;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
+.saveButton {
+  background-color: #2563EB;
+  color: white;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.saveButton:hover {
+  background-color: #1D4ED8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+.saveButton:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.citiesCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  border: 1px solid #F3F4F6;
+  animation: slideInUp 0.4s ease-out;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
+.addCityButton {
+  background-color: #10B981;
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.addCityButton:hover {
+  background-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+.addCityButton:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.searchSection {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #F9FAFB;
+  border-radius: 0.5rem;
+  animation: slideInDown 0.3s ease-out;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #FFFFFF;
+  margin-bottom: 1rem;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  background-color: #FAFBFC;
+  transform: translateY(-1px);
+}
+
+.citiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+  max-height: 16rem;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.cityOption {
+  padding: 0.75rem;
+  background-color: white;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  text-align: left;
+}
+
+.cityOption:hover {
+  border-color: #2563EB;
+  background-color: #EFF6FF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.cityOptionName {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+.cityOptionCountry {
+  font-size: 0.75rem;
+  color: #6B7280;
+}
+
+.cityStop {
+  border: 1.5px solid #E5E7EB;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  background-color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: scaleIn 0.3s ease-out;
+}
+
+.cityStop:hover {
+  border-color: #2563EB;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.cityStopHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.cityStopInfo {
+  flex: 1;
+}
+
+.cityStopName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.cityStopDate {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+.removeButton {
+  color: #EF4444;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.removeButton:hover {
+  background-color: #FEE2E2;
+  transform: scale(1.1);
+}
+
+.removeButton:active {
+  transform: scale(0.95);
+}
+
+.toggleActivities {
+  color: #2563EB;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+}
+
+.toggleActivities:hover {
+  color: #1D4ED8;
+  text-decoration: underline;
+}
+
+.activitiesList {
+  margin-top: 1rem;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.activitiesTitle {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background-color: #F9FAFB;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.activityItem:hover {
+  background-color: #F3F4F6;
+  transform: translateX(4px);
+}
+
+.activityInfo {
+  flex: 1;
+}
+
+.activityName {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.activityDetails {
+  font-size: 0.75rem;
+  color: #6B7280;
+}
+
+.addActivityButton {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+}
+
+.addActivityButtonActive {
+  background-color: #2563EB;
+  color: white;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.addActivityButtonActive:hover {
+  background-color: #1D4ED8;
+  transform: translateY(-1px);
+}
+
+.addActivityButtonInactive {
+  background-color: #9CA3AF;
+  color: white;
+  cursor: not-allowed;
+}
+
+.selectedActivities {
+  margin-top: 1rem;
+}
+
+.selectedActivitiesTitle {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.selectedActivitiesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.activityTag {
+  padding: 0.375rem 0.75rem;
+  background-color: #2563EB;
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  animation: scaleIn 0.2s ease-out;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6B7280;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@media (max-width: 768px) {
+  .citiesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+

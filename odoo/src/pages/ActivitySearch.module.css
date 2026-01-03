@@ -1,0 +1,240 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.025em;
+  animation: slideInDown 0.4s ease-out;
+}
+
+.searchCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  border: 1px solid #F3F4F6;
+  animation: slideInUp 0.4s ease-out;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #FFFFFF;
+  margin-bottom: 1rem;
+}
+
+.searchInput:hover {
+  border-color: #D1D5DB;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  background-color: #FAFBFC;
+  transform: translateY(-1px);
+}
+
+.filtersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.filterLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.filterInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: white;
+}
+
+.filterInput:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.filterSelect {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background-color: white;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.activitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.activityCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #F3F4F6;
+  animation: scaleIn 0.4s ease-out;
+}
+
+.activityCard:nth-child(1) { animation-delay: 0.1s; }
+.activityCard:nth-child(2) { animation-delay: 0.2s; }
+.activityCard:nth-child(3) { animation-delay: 0.3s; }
+.activityCard:nth-child(4) { animation-delay: 0.4s; }
+.activityCard:nth-child(5) { animation-delay: 0.5s; }
+.activityCard:nth-child(6) { animation-delay: 0.6s; }
+
+.activityCard:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px) scale(1.02);
+  border-color: #E0E7FF;
+}
+
+.activityImage {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.activityCard:hover .activityImage {
+  transform: scale(1.1);
+}
+
+.activityContent {
+  padding: 1rem;
+}
+
+.activityName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.activityCity {
+  font-size: 0.875rem;
+  color: #2563EB;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.activityDescription {
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.activityMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.activityType {
+  padding: 0.25rem 0.75rem;
+  background-color: #F3F4F6;
+  color: #374151;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.addButton {
+  width: 100%;
+  text-align: center;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  background-color: #2563EB;
+  color: white;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.addButton:hover {
+  background-color: #1D4ED8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+.addButton:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.addButton:disabled {
+  background-color: #9CA3AF;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.emptyState {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  text-align: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.emptyText {
+  color: #6B7280;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .activitiesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filtersGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+

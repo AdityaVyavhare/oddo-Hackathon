@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.item svg {
+  color: #9CA3AF;
+}
+
+

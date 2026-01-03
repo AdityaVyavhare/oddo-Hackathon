@@ -1,0 +1,361 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.container > * {
+  animation: slideInUp 0.5s ease-out both;
+}
+
+.container > *:nth-child(1) { animation-delay: 0.1s; }
+.container > *:nth-child(2) { animation-delay: 0.2s; }
+.container > *:nth-child(3) { animation-delay: 0.3s; }
+.container > *:nth-child(4) { animation-delay: 0.4s; }
+.container > *:nth-child(5) { animation-delay: 0.5s; }
+
+.header {
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  color: #6B7280;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.statCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #F3F4F6;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.05), transparent);
+  transition: left 0.5s ease;
+}
+
+.statCard:hover::before {
+  left: 100%;
+}
+
+.statCard:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-4px) scale(1.02);
+  border-color: #E0E7FF;
+}
+
+.statContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statInfo {
+  flex: 1;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-bottom: 0.25rem;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #111827;
+}
+
+.statIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563EB;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.statCard:hover .statIcon {
+  transform: scale(1.1) rotate(5deg);
+  opacity: 1;
+}
+
+.ctaCard {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+  padding: 2.5rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaCard::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ctaIcon {
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.ctaTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.ctaSubtitle {
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: white;
+  color: #2563EB;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ctaButton:hover {
+  background-color: #F9FAFB;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #2563EB;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+}
+
+.viewAllLink:hover {
+  color: #1D4ED8;
+  gap: 0.5rem;
+}
+
+.tripsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.tripCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #F3F4F6;
+  position: relative;
+}
+
+.tripCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tripCard:hover::after {
+  opacity: 1;
+}
+
+.tripCard:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px) scale(1.02);
+  border-color: #E0E7FF;
+}
+
+.tripCard:active {
+  transform: translateY(-2px) scale(1.01);
+}
+
+.tripImage {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tripCard:hover .tripImage {
+  transform: scale(1.1);
+}
+
+.tripContent {
+  padding: 1rem;
+}
+
+.tripName {
+  font-weight: bold;
+  font-size: 1.125rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.tripDate {
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-bottom: 0.5rem;
+}
+
+.tripCities {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+}
+
+.emptyState {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  text-align: center;
+}
+
+.emptyText {
+  color: #6B7280;
+  margin-bottom: 1rem;
+}
+
+.emptyLink {
+  color: #2563EB;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.emptyLink:hover {
+  color: #1D4ED8;
+  text-decoration: underline;
+}
+
+.citiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.cityCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #F3F4F6;
+}
+
+.cityCard:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.cityImage {
+  width: 100%;
+  height: 8rem;
+  object-fit: cover;
+}
+
+.cityContent {
+  padding: 0.75rem;
+}
+
+.cityName {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+.cityCountry {
+  font-size: 0.75rem;
+  color: #6B7280;
+}
+
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tripsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .citiesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

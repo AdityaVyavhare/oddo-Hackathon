@@ -1,0 +1,147 @@
+.container {
+  max-width: 28rem;
+  margin: 0 auto;
+  animation: slideInUp 0.5s ease-out;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #111827;
+  letter-spacing: -0.025em;
+}
+
+.error {
+  margin-bottom: 1rem;
+  padding: 0.875rem 1rem;
+  background-color: #FEF2F2;
+  border: 1.5px solid #FCA5A5;
+  color: #991B1B;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+  background-color: #FFFFFF;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background-color: #FAFBFC;
+}
+
+.input::placeholder {
+  color: #9CA3AF;
+}
+
+.forgotLink {
+  text-align: right;
+  font-size: 0.875rem;
+  color: #2563EB;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgotLink:hover {
+  color: #1D4ED8;
+  text-decoration: underline;
+}
+
+.submitButton {
+  width: 100%;
+  background-color: #2563EB;
+  color: white;
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.submitButton:hover {
+  background-color: #1D4ED8;
+  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+  transform: translateY(-2px);
+}
+
+.submitButton:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.submitButton:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.toggleButton {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6B7280;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.toggleButton:hover {
+  color: #2563EB;
+}
+
+.demoText {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #6B7280;
+}
+
