@@ -51,9 +51,11 @@ app.get("/health", (req, res) => {
 
 // API Routes
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/countries", require("./routes/countries"));
+app.use("/api/cities", require("./routes/cities"));
 // Add more routes here as you build them
 // app.use('/api/trips', require('./routes/trips'));
-// app.use('/api/cities', require('./routes/cities'));
 // app.use('/api/activities', require('./routes/activities'));
 
 // Root endpoint

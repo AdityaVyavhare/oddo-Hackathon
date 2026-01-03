@@ -59,6 +59,7 @@ class User {
             SELECT 
                 user_id,
                 email,
+                password_hash,
                 first_name,
                 last_name,
                 username,
@@ -139,6 +140,25 @@ class User {
   // Get user statistics
   static async getUserStats(userId) {
     const query = "SELECT * FROM vw_user_stats WHERE user_id = ?";
+    const results = await executeQuery(query, [userId]);
+    return results[0] || null;
+  }
+
+  // Update password
+  static async updatePassword(userId, passwordHash) {
+    const query = "UPDATE users SET password_hash = ? WHERE user_id = ?";
+    await executeQuery(query, [passwordHash, userId]);
+  }
+
+  // Deactivate account (soft delete)
+  static async deactivateAccount(userId) {
+    const query = "UPDATE users SET is_active = FALSE WHERE user_id = ?";
+    await executeQuery(query, [userId]);
+  }
+
+  // Find user by ID with password (for authentication)
+  static async findByIdWithPassword(userId) {
+    const query = "SELECT * FROM users WHERE user_id = ? AND is_active = TRUE";
     const results = await executeQuery(query, [userId]);
     return results[0] || null;
   }
